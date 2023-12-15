@@ -4,6 +4,8 @@
 #include <string>
 
 #include <gl/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace core {
 	constexpr unsigned int INVALID_SHADER = 0xFFFFF;
@@ -15,24 +17,28 @@ namespace core {
 		Shader(const std::string& vertexPath, const std::string& fragmentPath);
 		~Shader();
 
-		// Create Shader from Vertex Shader Source and Fragment Shader Source
-		void create(const std::string& vertexSource, const std::string& fragmentSource);
 		void bind();
 		void unbind();
 
-		// Load a Shader Source File and return it's source code
-		const std::string loadShader(const std::string& path);
-
 		// Set Uniforms
+		GLint getUniformLocation(const std::string& name);
+
 		void setUniform1i(const std::string& name, int value);
 		void setUniform1f(const std::string& name, float value);
+		void setUniform3f(const std::string& name, float v0, float v1, float v2);
 		void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+		void setUniformMat4(const std::string& name, const glm::mat4& mat);
 
 		inline GLuint getProgram() { return m_program; }
 
 	private:
+		// Create Shader from Vertex Shader Source and Fragment Shader Source
+		void create(const std::string& vertexSource, const std::string& fragmentSource);
+
+		// Load a Shader Source File and return it's source code
+		const std::string loadShader(const std::string& path);
+
 		GLuint compileShader(GLuint type, const std::string& source);
-		GLint getUniformLocation(const std::string& name);
 
 		GLuint m_program = 0;
 		GLuint m_vertexShader = 0;

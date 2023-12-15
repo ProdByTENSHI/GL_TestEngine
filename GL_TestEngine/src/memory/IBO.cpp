@@ -1,5 +1,7 @@
 #include "IBO.h"
 
+#include <iostream>
+
 namespace memory {
 	IBO::IBO() {
 		glGenBuffers(1, &m_rendererID);

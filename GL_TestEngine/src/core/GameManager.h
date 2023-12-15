@@ -1,9 +1,7 @@
 #pragma once
 
-#define STB_IMAGE_IMPLEMENTATION
-
 #include "core/Window.h"
-#include "camera/Camera.h"
+#include "model/Model.h"
 
 namespace core {
 	class GameManager {
@@ -18,6 +16,5 @@ namespace core {
 		bool m_isRunning = false;
 
 		Window* m_window = nullptr;
-		camera::Camera* m_mainCamera = nullptr;
 	};
 }

@@ -18,6 +18,8 @@ namespace core {
 
 		glfwMakeContextCurrent(m_window);
 
+		glDisable(GL_FRAMEBUFFER_SRGB);
+
 		// Limit Framerate to Monitor Hertz
 		glfwSwapInterval(1);
 

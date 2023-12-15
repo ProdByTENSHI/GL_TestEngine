@@ -6,7 +6,8 @@
 namespace core {
 	Shader::Shader() {}
 
-	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath) {
+	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+		: m_program(0), m_vertexShader(0), m_fragmentShader(0) {
 		std::string vertexSource = loadShader(vertexPath);
 		std::string fragmentSource = loadShader(fragmentPath);
 
@@ -100,8 +101,16 @@ namespace core {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
+	void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2) {
+		glUniform3f(getUniformLocation(name), v0, v1, v2);
+	}
+
 	void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {
 		glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
+	}
+
+	void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat) {
+		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 	}
 
 	GLint Shader::getUniformLocation(const std::string& name) {
@@ -109,10 +118,19 @@ namespace core {
 			return m_uniformLocationCache[name];
 
 		GLint location = glGetUniformLocation(m_program, name.c_str());
-		if (location == -1)
+		if (location == -1) {
 			std::cerr << "WARNING: Uniform '" << name << "' does not exist" << std::endl;
+			GLint count;
+			glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &count);
+			for (int i = 0; i < count; i++) {
+				char name[100];
+				glGetActiveUniformName(m_program, i, sizeof(name), (GLsizei*)NULL, name);
+				std::cout << "Active Uniforms: " << name << std::endl;
+			}
+		}
+		else
+			m_uniformLocationCache[name] = location;
 
-		m_uniformLocationCache[name] = location;
 		return location;
 	}
 }

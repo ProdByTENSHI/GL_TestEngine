@@ -27,10 +27,7 @@
     <ClCompile Include="src\core\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\camera\Camera.cpp">
+    <ClCompile Include="src\model\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\Texture.cpp">
@@ -56,10 +53,7 @@
     <ClInclude Include="src\core\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\camera\Camera.h">
+    <ClInclude Include="src\model\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\Texture.h">
@@ -77,5 +71,9 @@
     <ClInclude Include="src\memory\VertexBufferLayout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shader\model.frag" />
+    <None Include="res\shader\model.vert" />
   </ItemGroup>
 </Project>

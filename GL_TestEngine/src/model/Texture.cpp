@@ -1,3 +1,4 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "Texture.h"
 
 #include <iostream>
@@ -8,9 +9,8 @@ namespace model {
 		stbi_set_flip_vertically_on_load(1);
 
 		m_data = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
-		if (!m_data) {
+		if (!m_data)
 			std::cerr << "Could not load texture from path " << path << std::endl;
-		}
 
 		glGenTextures(1, &m_textureBuffer);
 		glBindTexture(GL_TEXTURE_2D, m_textureBuffer);
@@ -25,7 +25,6 @@ namespace model {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_data);
 
 		// Free up resources after usage
-		glBindTexture(GL_TEXTURE_2D, 0);
 		if (m_data)
 			stbi_image_free(m_data);
 	}
