@@ -2,6 +2,7 @@
 #include "Texture.h"
 
 #include <iostream>
+#include "logger/Logger.h"
 
 namespace model {
 	Texture::Texture(const std::string& path)
@@ -10,7 +11,7 @@ namespace model {
 
 		m_data = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
 		if (!m_data)
-			std::cerr << "Could not load texture from path " << path << std::endl;
+			logger::Logger::getInstance()->write(std::string("Could not load Texture from Path: " + path));
 
 		glGenTextures(1, &m_textureBuffer);
 		glBindTexture(GL_TEXTURE_2D, m_textureBuffer);
@@ -27,6 +28,8 @@ namespace model {
 		// Free up resources after usage
 		if (m_data)
 			stbi_image_free(m_data);
+
+		logger::Logger::getInstance()->write(std::string("Loaded Texture " + path));
 	}
 
 	Texture::~Texture() {

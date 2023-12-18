@@ -6,12 +6,12 @@
 
 #include <memory>
 
-#include "model/Mesh.h"
 #include "Shader.h"
+#include "ResourceManager.h"
 
 namespace core {
-	Shader shader;
-	model::Mesh* mesh = nullptr;
+	Shader* shader = nullptr;
+	model::Texture* texture = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -29,8 +29,8 @@ namespace core {
 
 		glEnable(GL_DEPTH_TEST);
 
-		shader = Shader("res/shader/shader.vert", "res/shader/shader.frag");
-		mesh = new model::Mesh("res/models/test.obj");
+		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
+		texture = ResourceManager::getInstance()->loadTexture("res/textures/wall.jpg");
 
 		m_isRunning = true;
 	}
@@ -39,7 +39,7 @@ namespace core {
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
 
-		logger::Logger::getInstance()->write("QUIT APPLICATION");
+		logger::Logger::getInstance()->write("Game Closed!");
 	}
 
 	void GameManager::update() {
@@ -47,7 +47,7 @@ namespace core {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			mesh->render(shader);
+			texture->bind();
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();

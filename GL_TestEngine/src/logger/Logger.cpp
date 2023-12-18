@@ -3,6 +3,7 @@
 #include <chrono>
 #include <ctime>
 #include <fstream>
+#include <iostream>
 
 namespace logger {
 	static Logger* instance;
@@ -38,5 +39,6 @@ namespace logger {
 		}
 
 		stream << "[" << currentTimeString << "]: " << content << std::endl;
+		std::cout << "[" << currentTimeString << "]: " << content << std::endl;
 	}
 }

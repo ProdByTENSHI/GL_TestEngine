@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\ResourceManager.cpp" />
     <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\memory\IBO.cpp" />
     <ClCompile Include="src\model\Mesh.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\logger\Logger.h" />
     <ClInclude Include="src\memory\IBO.h" />
     <ClInclude Include="src\memory\VertexBufferLayout.h" />
