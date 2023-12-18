@@ -27,7 +27,7 @@
     <ClCompile Include="src\core\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\model\Model.cpp">
+    <ClCompile Include="src\model\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\Texture.cpp">
@@ -42,6 +42,9 @@
     <ClCompile Include="src\memory\VAO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\logger\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Window.h">
@@ -53,7 +56,7 @@
     <ClInclude Include="src\core\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\model\Model.h">
+    <ClInclude Include="src\model\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\Texture.h">
@@ -71,9 +74,12 @@
     <ClInclude Include="src\memory\VertexBufferLayout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\logger\Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shader\model.frag" />
-    <None Include="res\shader\model.vert" />
+    <None Include="res\shader\shader.frag" />
+    <None Include="res\shader\shader.vert" />
   </ItemGroup>
 </Project>

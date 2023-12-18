@@ -143,8 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\memory\IBO.cpp" />
-    <ClCompile Include="src\model\Model.cpp" />
+    <ClCompile Include="src\model\Mesh.cpp" />
     <ClCompile Include="src\core\Shader.cpp" />
     <ClCompile Include="src\core\GameManager.cpp" />
     <ClCompile Include="src\core\Main.cpp" />
@@ -154,9 +155,10 @@
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\logger\Logger.h" />
     <ClInclude Include="src\memory\IBO.h" />
     <ClInclude Include="src\memory\VertexBufferLayout.h" />
-    <ClInclude Include="src\model\Model.h" />
+    <ClInclude Include="src\model\Mesh.h" />
     <ClInclude Include="src\core\Shader.h" />
     <ClInclude Include="src\core\GameManager.h" />
     <ClInclude Include="src\core\Window.h" />
@@ -165,8 +167,8 @@
     <ClInclude Include="src\memory\VAO.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shader\model.frag" />
-    <None Include="res\shader\model.vert" />
+    <None Include="res\shader\shader.frag" />
+    <None Include="res\shader\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

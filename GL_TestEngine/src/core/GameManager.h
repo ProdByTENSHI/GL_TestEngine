@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Window.h"
-#include "model/Model.h"
+#include "logger/Logger.h"
 
 namespace core {
 	class GameManager {

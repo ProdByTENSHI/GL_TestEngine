@@ -6,14 +6,16 @@
 
 #include <memory>
 
+#include "model/Mesh.h"
 #include "Shader.h"
 
 namespace core {
-	model::Model* model;
+	Shader shader;
+	model::Mesh* mesh = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
-			std::cout << "Could not initialize GLFW. Error: " << glfwGetError(NULL) << std::endl;
+			logger::Logger::getInstance()->write(std::string("Could not initialize GLFW. Error: " + glfwGetError(NULL)));
 			return;
 		}
 
@@ -21,13 +23,14 @@ namespace core {
 
 		// Initialize GLEW after creating the OpenGL Context
 		if (glewInit() != GLEW_OK) {
-			std::cout << "GLEW could not be initialized!";
+			logger::Logger::getInstance()->write("GLEW could not be initialized!");
 			return;
 		}
 
 		glEnable(GL_DEPTH_TEST);
 
-		model = new model::Model("res/models/test.obj", "res/textures/wall.jpg");
+		shader = Shader("res/shader/shader.vert", "res/shader/shader.frag");
+		mesh = new model::Mesh("res/models/test.obj");
 
 		m_isRunning = true;
 	}
@@ -35,6 +38,8 @@ namespace core {
 	GameManager::~GameManager() {
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
+
+		logger::Logger::getInstance()->write("QUIT APPLICATION");
 	}
 
 	void GameManager::update() {
@@ -42,7 +47,7 @@ namespace core {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			model->render();
+			mesh->render(shader);
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();

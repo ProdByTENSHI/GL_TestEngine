@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "logger/Logger.h"
+
 namespace core {
 	Shader::Shader() {}
 
@@ -12,6 +14,8 @@ namespace core {
 		std::string fragmentSource = loadShader(fragmentPath);
 
 		create(vertexSource, fragmentSource);
+
+		logger::Logger::getInstance()->write("Loaded Shader " + vertexPath + " : " + fragmentPath);
 	}
 
 	Shader::~Shader() {
@@ -46,7 +50,7 @@ namespace core {
 			GLchar errorMessage[1024];
 			glGetShaderInfoLog(id, logSize, &logSize, errorMessage);
 
-			std::cout << typeStr << " : " << errorMessage << std::endl;
+			logger::Logger::getInstance()->write(typeStr + " : " + errorMessage);
 
 			glDeleteShader(id);
 			return INVALID_SHADER;
