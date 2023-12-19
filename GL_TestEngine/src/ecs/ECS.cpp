@@ -1,7 +1,6 @@
 #include "ECS.h"
 
 #include <string>
-#include <algorithm>
 
 #include "logger/Logger.h"
 
@@ -20,9 +19,6 @@ namespace ecs {
 	Entity* EntityManager::createEmptyEntity() {
 		++m_entityCount;
 		Entity* entity = new Entity(m_entityCount);
-
-		EntityGroup group = getGroupByComponents(0);
-		addEntityToGroup(entity, group);
 
 		return entity;
 	}
@@ -70,14 +66,7 @@ namespace ecs {
 	}
 
 	EntityGroup& EntityManager::getGroupByComponents(BaseComponent componentTypes[]) {
-		for (const auto& group : m_entityGroups) {
-			for (unsigned int i = 0; i < m_entityGroups.size(), i++;) {
-				if (std::find(group->componentTypes.begin(), group->componentTypes.end(), componentTypes[i]) == group->componentTypes.end())
-					break;
-			}
-		}
-
-		EntityGroup group = createEntityGroup(componentTypes);
+		EntityGroup group;
 		return group;
 
 		// If no Group was found with the given Component Types create a new EntityGroup and return it
