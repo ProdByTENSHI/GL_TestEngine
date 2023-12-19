@@ -24,7 +24,7 @@ namespace ecs {
 
 	};
 
-	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die scheiﬂ Structs nicht kennt
+	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die schei√ü Structs nicht kennt
 	struct EntityGroup;
 	struct GroupChunk;
 
@@ -47,9 +47,9 @@ namespace ecs {
 	// A Chunk that serves as a Container for Entities that belong to the same Entity Group
 	struct GroupChunk {
 		EntityGroup& parentGroup;				// A reference to the EntityGroup the Chunk belongs to
-		Entity* entities[maxEntitiesPerChunk];	// An Array that holds all Entity Pointer of this Chunk
-		std::vector<unsigned int> emptySlots;	// A Vector that holds the IDs of the Empty Slots in the Chunk(from 0 - maxEntitiesPerChunk)
-		unsigned int id;						// Identifier of the Chunk
+		Entity* entities[maxEntitiesPerChunk];			// An Array that holds all Entity Pointer of this Chunk
+		std::vector<unsigned int> emptySlots;			// A Vector that holds the IDs of the Empty Slots in the Chunk(from 0 - maxEntitiesPerChunk)
+		unsigned int id;					// Identifier of the Chunk
 	};
 
 	class EntityManager {
