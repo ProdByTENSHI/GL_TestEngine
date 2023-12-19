@@ -8,10 +8,11 @@
 
 #include "Shader.h"
 #include "ResourceManager.h"
+#include "ecs/ECS.h"
 
 namespace core {
 	Shader* shader = nullptr;
-	model::Texture* texture = nullptr;
+	ecs::Entity* entity = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -30,7 +31,7 @@ namespace core {
 		glEnable(GL_DEPTH_TEST);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
-		texture = ResourceManager::getInstance()->loadTexture("res/textures/wall.jpg");
+		entity = ecs::EntityManager::getInstance()->createEmptyEntity();
 
 		m_isRunning = true;
 	}
@@ -46,8 +47,6 @@ namespace core {
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			texture->bind();
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();
