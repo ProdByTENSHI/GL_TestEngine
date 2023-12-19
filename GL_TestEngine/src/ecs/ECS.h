@@ -5,7 +5,7 @@
 #include "BaseComponent.h"
 
 namespace ecs {
-	constexpr unsigned int maxEntitiesPerChunk = 50;
+	constexpr unsigned int maxEntitiesPerChunk = 2;
 
 	class Entity {
 	public:
@@ -17,7 +17,7 @@ namespace ecs {
 		inline unsigned int getId() const { return m_id; }
 
 	private:
-		// TODO: Find a way to copy the Components, States, etc but not the Entity ID. Till that restrict Copy Constructor
+		// TODO: Find a way to copy the Components, States, etc without copying the Entity ID. Till that restrict Copy Constructor
 		Entity(const Entity& other);
 
 		unsigned int m_id;
@@ -35,7 +35,7 @@ namespace ecs {
 	// On new Entity Creation put it there instead of creating new Chunks / Take up new Space
 	struct EntityGroup {
 		std::vector<GroupChunk*> chunks;
-		std::vector<BaseComponent> componentTypes;
+		std::vector<BaseComponent> components;
 		unsigned int id;
 
 		static inline unsigned int getGroupCount() { return m_groupCount; }
@@ -48,13 +48,13 @@ namespace ecs {
 	struct GroupChunk {
 		EntityGroup& parentGroup;				// A reference to the EntityGroup the Chunk belongs to
 		Entity* entities[maxEntitiesPerChunk];	// An Array that holds all Entity Pointer of this Chunk
-		std::vector<unsigned int> emptySlots;	// A Vector that holds the IDs of the Empty Slots in the Chunk(from 0 - maxEntitiesPerChunk)
 		unsigned int id;						// Identifier of the Chunk
 	};
 
 	class EntityManager {
 	public:
 		static EntityManager* getInstance();
+		~EntityManager();
 
 		Entity* createEmptyEntity();
 
@@ -63,7 +63,7 @@ namespace ecs {
 		EntityManager();
 		EntityManager(const EntityManager& other);
 
-		EntityGroup& createEntityGroup(BaseComponent componentTypes[]);
+		EntityGroup& createEntityGroup(std::vector<BaseComponent> components);
 		void deleteEntityGroup(EntityGroup& group);
 
 		// Adds an Entity to a Group and manages the needed Chunks for that
@@ -72,7 +72,7 @@ namespace ecs {
 
 		Entity* getEntity(unsigned int id, EntityGroup& group);
 
-		EntityGroup& getGroupByComponents(BaseComponent componentTypes[]);
+		EntityGroup& getGroupByComponents(std::vector<BaseComponent> components);
 
 		GroupChunk* createChunk(EntityGroup& parent);
 
@@ -82,7 +82,7 @@ namespace ecs {
 		GroupChunk* getChunk(EntityGroup& group, unsigned int id);
 
 		// Returns the next Free Slot ID
-		unsigned int getFreeChunkSlot(const GroupChunk& chunk);
+		unsigned int getFreeChunkSlot(GroupChunk chunk);
 
 		unsigned int m_entityCount = 0;
 

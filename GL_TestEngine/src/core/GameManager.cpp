@@ -12,7 +12,7 @@
 
 namespace core {
 	Shader* shader = nullptr;
-	ecs::Entity* entity = nullptr;
+	ecs::Entity* entity[5];
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -31,7 +31,10 @@ namespace core {
 		glEnable(GL_DEPTH_TEST);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
-		entity = ecs::EntityManager::getInstance()->createEmptyEntity();
+
+		for (unsigned int i = 0; i < 5; i++) {
+			entity[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
+		}
 
 		m_isRunning = true;
 	}

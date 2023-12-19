@@ -24,13 +24,9 @@ namespace logger {
 
 		// Remove newline character from ctime output
 		// Fuck ctime for that
+		// Fix: Cuts of first letter when concat with num values
 		std::string currentTimeString = std::ctime(&time);
-		for (int i = 0; i < currentTimeString.length(); i++) {
-			if (currentTimeString[i] == '\n') {
-				currentTimeString[i] = '\0';
-				break;
-			}
-		}
+		currentTimeString.erase(std::remove(currentTimeString.begin(), currentTimeString.end(), '\n'), currentTimeString.end());
 
 		// Write Content to File
 		if (m_firstWrite) {
@@ -38,7 +34,7 @@ namespace logger {
 			m_firstWrite = false;
 		}
 
-		stream << "[" << currentTimeString << "]: " << content << std::endl;
-		std::cout << "[" << currentTimeString << "]: " << content << std::endl;
+		stream << "[" << "]: " << content << std::endl;
+		std::cout << "[" << "]: " << content << std::endl;
 	}
 }

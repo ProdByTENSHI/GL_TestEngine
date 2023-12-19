@@ -1,6 +1,7 @@
 #include "ECS.h"
 
 #include <string>
+#include <iostream>
 
 #include "logger/Logger.h"
 
@@ -8,6 +9,13 @@ namespace ecs {
 	static EntityManager* instance = nullptr;
 
 	EntityManager::EntityManager() { }
+
+	EntityManager::~EntityManager() {
+		// Delete all Entities and free up all resources
+		for (EntityGroup* group : m_entityGroups) {
+			deleteEntityGroup(*group);
+		}
+	}
 
 	EntityManager* EntityManager::getInstance() {
 		if (instance == nullptr)
@@ -19,6 +27,10 @@ namespace ecs {
 	Entity* EntityManager::createEmptyEntity() {
 		++m_entityCount;
 		Entity* entity = new Entity(m_entityCount);
+		std::vector<BaseComponent> components;
+		addEntityToGroup(entity, getGroupByComponents(components));
+
+		logger::Logger::getInstance()->write(std::string("Created Entity. ID: " + m_entityCount));
 
 		return entity;
 	}
@@ -26,16 +38,16 @@ namespace ecs {
 	// <========== ENTITY GROUP AND CHUNK MANAGEMENT ==========>
 	unsigned int EntityGroup::m_groupCount = 0;
 
-	EntityGroup& EntityManager::createEntityGroup(BaseComponent components[]) {
+	EntityGroup& EntityManager::createEntityGroup(std::vector<BaseComponent> components) {
 		//unsigned int componentSize = (unsigned int)(sizeof(components) / sizeof(BaseComponent)); -> Das ist fürn Arsch weil die Child Klassen eine andere Größe haben. Das muss irgendwie anders gehen
 		std::string loggerOutput;
 
 		EntityGroup* group = new EntityGroup();
 		group->id = EntityGroup::getGroupCount();
+		group->components = components;
 
-		// TODO: Make sure there are no duplicate types
-		//for (unsigned int i = 0; i < componentSize; i++) {
-		//	loggerOutput.append(components[i].name);
+		//for (const auto& component : components) {
+		//	loggerOutput.append(component.name);
 		//}
 
 		logger::Logger::getInstance()->write("Created Entity Group with Components: " + loggerOutput);
@@ -43,17 +55,23 @@ namespace ecs {
 	}
 
 	void EntityManager::deleteEntityGroup(EntityGroup& group) {
-		logger::Logger::getInstance()->write("Deleted Group");
+		for (const auto& chunk : group.chunks) {
+			removeChunk(group, chunk->id);
+		}
+
+		std::vector<EntityGroup*>::iterator it;
+		logger::Logger::getInstance()->write("Deleted Group with the ID " + group.id);
 	}
 
 	void EntityManager::addEntityToGroup(Entity* entity, EntityGroup& group) {
-		if (group.chunks[group.chunks.size() - 1]->emptySlots.size() == 0) {
+		if (group.chunks.size() == 0 || getFreeChunkSlot(*group.chunks[group.chunks.size() - 1])) {
 			GroupChunk* chunk = createChunk(group);
 		}
 	}
 
 	void EntityManager::removeEntityFromGroup(Entity* entity, EntityGroup& group) {
-
+		// Go through each Chunk and look for Entity 
+		logger::Logger::getInstance()->write(std::string("Removed Entity with the ID " + entity->getId()) + std::string(" from the Group " + group.id));
 	}
 
 	Entity* EntityManager::getEntity(unsigned int id, EntityGroup& group) {
@@ -65,21 +83,17 @@ namespace ecs {
 		}
 	}
 
-	EntityGroup& EntityManager::getGroupByComponents(BaseComponent componentTypes[]) {
+	// TODO: Implement this
+	EntityGroup& EntityManager::getGroupByComponents(std::vector<BaseComponent> components) {
+
+
 		EntityGroup group;
 		return group;
-
-		// If no Group was found with the given Component Types create a new EntityGroup and return it
 	}
 
 	GroupChunk* EntityManager::createChunk(EntityGroup& group) {
 		GroupChunk chunk{ group };
 		group.chunks.push_back(&chunk);
-
-		// Marks all Slots as Free
-		for (unsigned int i = 0; i < maxEntitiesPerChunk; i++) {
-			chunk.emptySlots.push_back(i);
-		}
 
 		logger::Logger::getInstance()->write("Created new Chunk for group " + group.id);
 		return &chunk;
@@ -91,9 +105,12 @@ namespace ecs {
 			delete entity;
 		}
 
-		// TODO: Remove Chunks from group.chunks Vector
+		// Remove Chunks from group.chunks Vector
+		group.chunks.erase(group.chunks.begin() + id);
 
 		logger::Logger::getInstance()->write("Removed Chunk " + id);
+
+		delete chunk;
 	}
 
 	GroupChunk* EntityManager::getChunk(EntityGroup& group, unsigned int id) {
@@ -105,9 +122,12 @@ namespace ecs {
 		return group.chunks[id];
 	}
 
-	unsigned int EntityManager::getFreeChunkSlot(const GroupChunk& chunk) {
-		for (unsigned int i = 0; i < chunk.emptySlots.size(); i++) {
-			return i;
+	unsigned int EntityManager::getFreeChunkSlot(GroupChunk chunk) {
+		const unsigned int arrayLength = (sizeof(chunk.entities) / sizeof(GroupChunk));
+
+		for (unsigned int i = 0; i < arrayLength; i++) {
+			if (chunk.entities[i] == nullptr)
+				return i;
 		}
 
 		return 0xFF;
