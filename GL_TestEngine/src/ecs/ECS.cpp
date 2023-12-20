@@ -34,6 +34,7 @@ namespace ecs {
 
 		//logger::Logger::getInstance()->write(std::string("Created Entity"));
 		std::cout << "Created Entity with the ID " << entity->getId() << std::endl;
+		std::cout << entity << std::endl;
 
 		m_entityCount++;
 		return entity;
@@ -56,7 +57,7 @@ namespace ecs {
 	}
 
 	void EntityManager::deleteEntityGroup(EntityGroup& group) {
-		for (const auto& chunk : group.chunks) {
+		for (auto& chunk : group.chunks) {
 			removeChunk(group, chunk->id);
 		}
 
@@ -144,12 +145,14 @@ namespace ecs {
 
 	void EntityManager::removeChunk(EntityGroup& group, unsigned int id) {
 		GroupChunk* chunk = getChunk(group, id);
+
 		if (chunk == nullptr)
 			return;
 
 		// Delete all Entities from the Chunk
-		for (const auto& entity : chunk->entities) {
-			delete entity;
+		unsigned int entitySize = (sizeof(chunk->entities) / sizeof(chunk->entities[0]));
+		for (unsigned int i = 0; i < entitySize; i++) {
+			std::cout << chunk->entities[i] << std::endl;
 		}
 
 		// Remove Chunks from group.chunks Vector
@@ -167,6 +170,8 @@ namespace ecs {
 			std::cout << "Chunk with the ID: " << id << " does not exist in Group " << group.id << std::endl;
 			return nullptr;
 		}
+
+		std::cout << group.chunks[id] << std::endl;
 
 		return group.chunks[id];
 	}

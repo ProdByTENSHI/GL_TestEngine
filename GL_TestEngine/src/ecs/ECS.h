@@ -14,6 +14,8 @@ namespace ecs {
 			m_id = id;
 		}
 
+		~Entity() { m_id = 0xFFF; }
+
 		inline unsigned int getId() const { return m_id; }
 
 	private:
