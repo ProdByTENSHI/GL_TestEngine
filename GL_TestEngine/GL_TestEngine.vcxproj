@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\utility\ContainerUtility.cpp" />
     <ClCompile Include="src\core\ResourceManager.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\logger\Logger.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\utility\ContainerUtility.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\ecs\BaseComponent.h" />
     <ClInclude Include="src\ecs\ECS.h" />

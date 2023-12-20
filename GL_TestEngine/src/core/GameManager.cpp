@@ -12,7 +12,7 @@
 
 namespace core {
 	Shader* shader = nullptr;
-	ecs::Entity* entity[5];
+	ecs::Entity* entities[10];
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -32,14 +32,18 @@ namespace core {
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
 
-		for (unsigned int i = 0; i < 5; i++) {
-			entity[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
+		unsigned int entitiesSize = (sizeof(entities) / sizeof(entities[0]));
+		for (unsigned int i = 0; i < entitiesSize; i++) {
+			entities[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
 		}
+		
+		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(5);
 
 		m_isRunning = true;
 	}
 
 	GameManager::~GameManager() {
+		delete ecs::EntityManager::getInstance();
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
 

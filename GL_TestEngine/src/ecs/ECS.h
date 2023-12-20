@@ -5,7 +5,7 @@
 #include "BaseComponent.h"
 
 namespace ecs {
-	constexpr unsigned int maxEntitiesPerChunk = 2;
+	constexpr unsigned int maxEntitiesPerChunk = 5;		// TODO: Increase Number once everything is setup
 
 	class Entity {
 	public:
@@ -38,8 +38,6 @@ namespace ecs {
 		std::vector<BaseComponent> components;
 		unsigned int id;
 
-		static inline unsigned int getGroupCount() { return m_groupCount; }
-
 	private:
 		static unsigned int m_groupCount;
 	};
@@ -57,22 +55,23 @@ namespace ecs {
 		~EntityManager();
 
 		Entity* createEmptyEntity();
+		
+		// Expensive Operation! Use this only once and cache the Result if Possible!
+		Entity* getEntityById(unsigned int id);
 
 	private:
 		// Singleton Stuff
 		EntityManager();
 		EntityManager(const EntityManager& other);
 
-		EntityGroup& createEntityGroup(std::vector<BaseComponent> components);
+		EntityGroup* createEntityGroup(std::vector<BaseComponent> components);
 		void deleteEntityGroup(EntityGroup& group);
 
 		// Adds an Entity to a Group and manages the needed Chunks for that
 		void addEntityToGroup(Entity* entity, EntityGroup& group);
 		void removeEntityFromGroup(Entity* entity, EntityGroup& group);
 
-		Entity* getEntity(unsigned int id, EntityGroup& group);
-
-		EntityGroup& getGroupByComponents(std::vector<BaseComponent> components);
+		EntityGroup& getGroupByComponents(std::vector<BaseComponent>& components);
 
 		GroupChunk* createChunk(EntityGroup& parent);
 
@@ -81,11 +80,13 @@ namespace ecs {
 
 		GroupChunk* getChunk(EntityGroup& group, unsigned int id);
 
-		// Returns the next Free Slot ID
-		unsigned int getFreeChunkSlot(GroupChunk chunk);
+		// Returns the next Free Slot ID or -1 if none was found
+		int getFreeChunkSlot(GroupChunk chunk);
 
 		unsigned int m_entityCount = 0;
+		unsigned int m_groupCount = 0;
 
 		std::vector<EntityGroup*> m_entityGroups;
+		EntityGroup m_defaultGroup;					// The Default Group does ot have any Components and is used for Componentless Entities
 	};
 }

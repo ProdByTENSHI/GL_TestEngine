@@ -24,7 +24,7 @@ namespace logger {
 
 		// Remove newline character from ctime output
 		// Fuck ctime for that
-		// Fix: Cuts of first letter when concat with num values
+		// Fix: Cuts of first letter when concat with num values -> Look into Pointer Arithmetics for this issue
 		std::string currentTimeString = std::ctime(&time);
 		currentTimeString.erase(std::remove(currentTimeString.begin(), currentTimeString.end(), '\n'), currentTimeString.end());
 
@@ -34,7 +34,7 @@ namespace logger {
 			m_firstWrite = false;
 		}
 
-		stream << "[" << "]: " << content << std::endl;
-		std::cout << "[" << "]: " << content << std::endl;
+		stream << "[" << currentTimeString << "]: " << content << std::endl;
+		std::cout << "[" << currentTimeString << "]: " << content << std::endl;
 	}
 }
