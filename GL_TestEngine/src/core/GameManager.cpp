@@ -37,7 +37,8 @@ namespace core {
 			entities[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
 		}
 		
-		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(5);
+		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(7);
+		std::cout << test->getId() << std::endl;
 
 		m_isRunning = true;
 	}

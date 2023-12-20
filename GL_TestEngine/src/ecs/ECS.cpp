@@ -11,7 +11,7 @@ namespace ecs {
 
 	EntityManager::EntityManager() {
 		std::vector<BaseComponent> v;
-		m_defaultGroup = *createEntityGroup(v);
+		m_defaultGroup = createEntityGroup(v);
 	}
 
 	EntityManager::~EntityManager() {
@@ -30,7 +30,7 @@ namespace ecs {
 
 	Entity* EntityManager::createEmptyEntity() {
 		Entity* entity = new Entity(m_entityCount);
-		addEntityToGroup(entity, m_defaultGroup);
+		addEntityToGroup(entity, *m_defaultGroup);
 
 		//logger::Logger::getInstance()->write(std::string("Created Entity"));
 		std::cout << "Created Entity with the ID " << entity->getId() << std::endl;
@@ -40,8 +40,6 @@ namespace ecs {
 	}
 
 	// <========== ENTITY GROUP AND CHUNK MANAGEMENT ==========>
-	unsigned int EntityGroup::m_groupCount = 0;
-
 	EntityGroup* EntityManager::createEntityGroup(std::vector<BaseComponent> components) {
 		unsigned int componentSize = (unsigned int)(sizeof(components) / sizeof(components[0]));
 
@@ -98,11 +96,7 @@ namespace ecs {
 		for (int group = 0; group < m_groupCount; group++) {
 			for (int chunk = 0; chunk < m_entityGroups[group]->chunks.size(); chunk++) {
 				unsigned int entityArrayLength = (sizeof(m_entityGroups[group]->chunks[chunk]->entities) / sizeof(m_entityGroups[group]->chunks[chunk]->entities[0]));
-				std::cout << chunk << " : " << entityArrayLength << std::endl;
-
 				for (int entity = 0; entity < entityArrayLength; entity++) {
-					std::cout << entity << std::endl;
-
 					if (m_entityGroups[group]->chunks[chunk]->entities[entity] == nullptr)
 						break;
 
@@ -117,7 +111,7 @@ namespace ecs {
 
 	EntityGroup& EntityManager::getGroupByComponents(std::vector<BaseComponent>& components) {
 		if (components.size() == 0)
-			return m_defaultGroup;
+			return *m_defaultGroup;
 
 		EntityGroup* entityGroup;
 
@@ -141,6 +135,7 @@ namespace ecs {
 		chunk->id = group.chunks.size();
 
 		group.chunks.push_back(chunk);
+		std::cout << "Created Chunk " << chunk->id << " with the Memory Adress: " << chunk << std::endl;
 
 		//logger::Logger::getInstance()->write("Created new Chunk");
 		std::cout << "Created new Chunk with the ID " << chunk->id << " for the Group " << group.id << std::endl;
@@ -176,7 +171,7 @@ namespace ecs {
 		return group.chunks[id];
 	}
 
-	int EntityManager::getFreeChunkSlot(GroupChunk chunk) {
+	const int EntityManager::getFreeChunkSlot(const GroupChunk& chunk) {
 		const unsigned int arrayLength = (sizeof(chunk.entities) / sizeof(chunk.entities[0]));
 
 		for (unsigned int i = 0; i < arrayLength; i++) {

@@ -81,12 +81,12 @@ namespace ecs {
 		GroupChunk* getChunk(EntityGroup& group, unsigned int id);
 
 		// Returns the next Free Slot ID or -1 if none was found
-		int getFreeChunkSlot(GroupChunk chunk);
+		const int getFreeChunkSlot(const GroupChunk& chunk);
 
 		unsigned int m_entityCount = 0;
 		unsigned int m_groupCount = 0;
 
 		std::vector<EntityGroup*> m_entityGroups;
-		EntityGroup m_defaultGroup;					// The Default Group does ot have any Components and is used for Componentless Entities
+		EntityGroup* m_defaultGroup;					// The Default Group does ot have any Components and is used for Componentless Entities
 	};
 }
