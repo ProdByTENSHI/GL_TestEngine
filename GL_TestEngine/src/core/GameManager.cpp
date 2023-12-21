@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "ResourceManager.h"
 #include "ecs/ECS.h"
+#include "ecs/Components.h"
 
 namespace core {
 	Shader* shader = nullptr;
@@ -35,10 +36,11 @@ namespace core {
 		unsigned int entitiesSize = (sizeof(entities) / sizeof(entities[0]));
 		for (unsigned int i = 0; i < entitiesSize; i++) {
 			entities[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
+			ecs::EntityManager::getInstance()->addComponent(entities[i]->getId(), new ecs::TransformComponent(glm::vec3(20.0f, 20.0f, 20.0f)));
 		}
-		
+
 		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(7);
-		std::cout << test->getId() << std::endl;
+		ecs::EntityManager::getInstance()->printComponents(*test);
 
 		m_isRunning = true;
 	}

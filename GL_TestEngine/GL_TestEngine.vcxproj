@@ -158,6 +158,7 @@
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\Components.h" />
     <ClInclude Include="src\utility\ContainerUtility.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\ecs\BaseComponent.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\model\Texture.h" />
     <ClInclude Include="src\memory\VBO.h" />
     <ClInclude Include="src\memory\VAO.h" />
+    <ClInclude Include="src\ecs\TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\shader.frag" />

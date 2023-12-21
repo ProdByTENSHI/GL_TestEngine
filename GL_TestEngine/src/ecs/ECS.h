@@ -1,10 +1,12 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include "BaseComponent.h"
 
 namespace ecs {
+#pragma region Entity
 	constexpr unsigned int maxEntitiesPerChunk = 5;		// TODO: Increase Number once everything is setup
 
 	class Entity {
@@ -13,8 +15,6 @@ namespace ecs {
 		Entity(unsigned int id) {
 			m_id = id;
 		}
-
-		~Entity() { m_id = 0xFFF; }
 
 		inline unsigned int getId() const { return m_id; }
 
@@ -25,7 +25,9 @@ namespace ecs {
 		unsigned int m_id;
 
 	};
+#pragma endregion
 
+#pragma region Entity Group & Chunk
 	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die scheiﬂ Structs nicht kennt
 	struct EntityGroup;
 	struct GroupChunk;
@@ -50,6 +52,7 @@ namespace ecs {
 		Entity* entities[maxEntitiesPerChunk];	// An Array that holds all Entity Pointer of this Chunk
 		unsigned int id;						// Identifier of the Chunk
 	};
+#pragma endregion
 
 	class EntityManager {
 	public:
@@ -57,15 +60,25 @@ namespace ecs {
 		~EntityManager();
 
 		Entity* createEmptyEntity();
-		
-		// Expensive Operation! Use this only once and cache the Result if Possible!
 		Entity* getEntityById(unsigned int id);
+
+		void addComponent(const Entity& entity, BaseComponent* component);
+		void addComponent(unsigned int entityID, BaseComponent* component);
+
+		void printComponents(const Entity& entity);
+
+		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
 
 	private:
 		// Singleton Stuff
 		EntityManager();
 		EntityManager(const EntityManager& other);
 
+#pragma region Components
+		std::vector<BaseComponent*>& getEntityComponents(const Entity& entity);
+#pragma endregion
+
+#pragma region Entity Group & Chunk
 		EntityGroup* createEntityGroup(std::vector<BaseComponent> components);
 		void deleteEntityGroup(EntityGroup& group);
 
@@ -84,11 +97,14 @@ namespace ecs {
 
 		// Returns the next Free Slot ID or -1 if none was found
 		const int getFreeChunkSlot(const GroupChunk& chunk);
+#pragma endregion
 
 		unsigned int m_entityCount = 0;
 		unsigned int m_groupCount = 0;
 
 		std::vector<EntityGroup*> m_entityGroups;
-		EntityGroup* m_defaultGroup;					// The Default Group does ot have any Components and is used for Componentless Entities
+		std::map<unsigned int, std::vector<BaseComponent*>> m_entityComponents;		// Stores the Components for each Entity in a Map assosiacted with the Entity ID
+
+		EntityGroup* m_defaultGroup;												// The Default Group does ot have any Components and is used for Componentless Entities
 	};
 }
