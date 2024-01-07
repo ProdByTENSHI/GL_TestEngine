@@ -6,7 +6,7 @@
 #include "BaseComponent.h"
 
 namespace ecs {
-	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die scheiﬂ Structs nicht kennt
+	// Das muss vorher weil der Nuttensohn Compiler sonst rummeckert und die scheiﬂ Structs nicht kennt
 	struct EntityGroup;
 	struct GroupChunk;
 
@@ -60,7 +60,7 @@ namespace ecs {
 		static EntityManager* getInstance();
 		~EntityManager();
 
-		Entity* createEmptyEntity();
+		Entity& createEmptyEntity();
 		Entity* getEntityById(unsigned int id);
 
 		void addComponent(Entity& entity, BaseComponent* component);
@@ -83,8 +83,8 @@ namespace ecs {
 		EntityGroup* createEntityGroup(std::vector<BaseComponent*> components);
 		void deleteEntityGroup(EntityGroup& group);
 
-		// Move Entity to another Group
-		void moveEntityToGroup(Entity* entity, EntityGroup& group);
+		// Move Entity to another Group and removed it from its old Group
+		void moveEntityToGroup(Entity& entity, EntityGroup& group);
 
 		EntityGroup& getGroupByComponents(std::vector<BaseComponent*>& components);
 

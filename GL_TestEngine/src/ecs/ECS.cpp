@@ -32,15 +32,17 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Entity
-	Entity* EntityManager::createEmptyEntity() {
+	Entity& EntityManager::createEmptyEntity() {
 		Entity* entity = new Entity(m_entityCount);
-		moveEntityToGroup(entity, *m_defaultGroup);
+		entity->group = m_defaultGroup;
 
 		//logger::Logger::getInstance()->write(std::string("Created Entity"));
-		std::cout << "Created Entity with the ID " << entity->getId() << std::endl;
+		std::cout << "Created Entity with the ID " << entity->getId() << " : " << entity << std::endl;
+
+		moveEntityToGroup(*entity, *m_defaultGroup);
 
 		m_entityCount++;
-		return entity;
+		return *entity;
 	}
 
 	Entity* EntityManager::getEntityById(unsigned int id) {
@@ -49,9 +51,8 @@ namespace ecs {
 			return nullptr;
 		}
 
-		// If this does not work run through each Group and Chunk to find the Entity
-		for (int group = 0; group < m_groupCount; group++) {
-			for (int chunk = 0; chunk < m_entityGroups[group]->chunks.size(); chunk++) {
+		for (unsigned int group = 0; group < m_groupCount; group++) {
+			for (unsigned int chunk = 0; chunk < m_entityGroups[group]->chunks.size(); chunk++) {
 				unsigned int entityArrayLength = (sizeof(m_entityGroups[group]->chunks[chunk]->entities) / sizeof(m_entityGroups[group]->chunks[chunk]->entities[0]));
 				for (int entity = 0; entity < entityArrayLength; entity++) {
 					if (m_entityGroups[group]->chunks[chunk]->entities[entity] == nullptr)
@@ -63,6 +64,7 @@ namespace ecs {
 			}
 		}
 
+		std::cout << "Could not find Entity with the ID " << id << std::endl;
 		return nullptr;
 	}
 
@@ -88,11 +90,14 @@ namespace ecs {
 		components.push_back(component);
 
 		// Find Group or Create a new one based on the updated Components
-		moveEntityToGroup(&entity, getGroupByComponents(components));
+		moveEntityToGroup(entity, getGroupByComponents(components));
 	}
 
 	void EntityManager::addComponent(unsigned int entityID, BaseComponent* component) {
 		Entity* entity = getEntityById(entityID);
+		if (entity == nullptr)
+			return;
+
 		addComponent(*entity, component);
 	}
 
@@ -150,7 +155,7 @@ namespace ecs {
 
 	void EntityManager::deleteEntityGroup(EntityGroup& group) {
 		std::cout << "Chunks in Group " << group.id << " : " << group.chunks.size() << std::endl;
-		for (unsigned int i = 0; i < group.chunks.size() - 1; i++) {
+		for (unsigned int i = 0; i < group.chunks.size(); i++) {
 			removeChunk(group, i);
 		}
 
@@ -158,10 +163,15 @@ namespace ecs {
 		std::cout << "Deleted Entity Group with the ID: " << group.id << std::endl;
 	}
 
-	void EntityManager::moveEntityToGroup(Entity* entity, EntityGroup& group) {
-		// Remove from previous Group
-		for (unsigned int i = 0; i < group.chunks.size() - 1; i++) {
-			std::cout << "Chunk " << group.chunks[i]->id << std::endl;
+	void EntityManager::moveEntityToGroup(Entity& entity, EntityGroup& group) {
+		// Remove from old Group(Dont look at the nested for-loops pls)
+		for (unsigned int i = 0; i < entity.group->chunks.size(); i++) {
+			unsigned int entitySize = (unsigned int)(sizeof(entity.group->chunks[i]->entities) / sizeof(entity.group->chunks[i]->entities[0]));
+			for (unsigned int e = 0; e < entitySize; e++) {
+				if (entity.group->chunks[i]->entities[e] == &entity) {
+					entity.group->chunks[i]->entities[e] = nullptr;
+				}
+			}
 		}
 
 		// Add To Group
@@ -171,15 +181,17 @@ namespace ecs {
 		// Create Chunk if the Group doesn't have one or the last chunk is full
 		if (group.chunks.size() == 0 || slot == -1) {
 			chunk = createChunk(group);
-			chunk->entities[0] = entity;	// Insert Entity into the first Slot since after creation this will be the 
+			chunk->entities[0] = &entity;	// Insert Entity into the first Slot since after creation this will be the 
 			return;
 		}
 
 		chunk = group.chunks[group.chunks.size() - 1];
-		chunk->entities[slot] = entity;
+		chunk->entities[slot] = &entity;
 
 		// Set Group of Entity to this
-		entity->group = &group;
+		entity.group = &group;
+
+		std::cout << "Moved Entity " << entity.getId() << " to Group " << group.id << std::endl;
 	}
 
 	EntityGroup& EntityManager::getGroupByComponents(std::vector<BaseComponent*>& components) {
@@ -205,7 +217,7 @@ namespace ecs {
 		chunk->id = group.chunks.size();
 
 		group.chunks.push_back(chunk);
-		std::cout << "Created Chunk " << chunk->id << " : " << chunk << std::endl;
+		std::cout << "Created Chunk " << chunk->id << " : " << chunk << " for Group " << group.id << std::endl;
 
 		return chunk;
 	}
@@ -218,6 +230,10 @@ namespace ecs {
 		// Delete all Entities from the Chunk
 		unsigned int entitySize = (sizeof(chunk->entities) / sizeof(chunk->entities[0]));
 		for (unsigned int i = 0; i < entitySize; i++) {
+			if (chunk->entities[i] == nullptr)
+				continue;
+
+			std::cout << "Deleted Entity " << chunk->entities[i] << " from the Chunk " << chunk << std::endl;
 			delete chunk->entities[i];
 		}
 

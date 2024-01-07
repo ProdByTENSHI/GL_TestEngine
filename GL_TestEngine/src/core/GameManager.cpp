@@ -35,22 +35,18 @@ namespace core {
 
 		unsigned int entitiesSize = (sizeof(entities) / sizeof(entities[0]));
 		for (unsigned int i = 0; i < entitiesSize; i++) {
-			entities[i] = ecs::EntityManager::getInstance()->createEmptyEntity();
+			entities[i] = &ecs::EntityManager::getInstance()->createEmptyEntity();
 			ecs::EntityManager::getInstance()->addComponent(entities[i]->getId(), new ecs::TransformComponent(glm::vec3(20.0f, 20.0f, 20.0f)));
 		}
 
 		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(7);
 		ecs::EntityManager::getInstance()->printComponents(*test);
 
-		if (new ecs::TransformComponent(glm::vec3(10.0f, 10.0f, 10.0f)) == ecs::EntityManager::getInstance()->getComponentByType(*test, ecs::ComponentType::Transform))
-			std::cout << "NICE" << std::endl;
-
 		m_isRunning = true;
 	}
 
 	GameManager::~GameManager() {
 		delete ecs::EntityManager::getInstance();
-
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
 
