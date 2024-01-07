@@ -6,8 +6,12 @@
 #include "BaseComponent.h"
 
 namespace ecs {
+	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die scheiﬂ Structs nicht kennt
+	struct EntityGroup;
+	struct GroupChunk;
+
 #pragma region Entity
-	constexpr unsigned int maxEntitiesPerChunk = 5;		// TODO: Increase Number once everything is setup
+	constexpr unsigned int maxEntitiesPerChunk = 15;
 
 	class Entity {
 	public:
@@ -18,8 +22,9 @@ namespace ecs {
 
 		inline unsigned int getId() const { return m_id; }
 
+		EntityGroup* group = nullptr;
+
 	private:
-		// TODO: Find a way to copy the Components, States, etc without copying the Entity ID. Till that restrict Copy Constructor
 		Entity(const Entity& other);
 
 		unsigned int m_id;
@@ -28,10 +33,6 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Entity Group & Chunk
-	// Das muss vorher weil Visual Studio der Nuttensohn sonst rummeckert und die scheiﬂ Structs nicht kennt
-	struct EntityGroup;
-	struct GroupChunk;
-
 	// Entities are Grouped by Component Types(Unordered)
 	// Each Entity Group has Chunks which can store up to maxEntitiesPerChunk Entities
 	// If the last Chunk is full a new Chunk will be created
@@ -39,7 +40,7 @@ namespace ecs {
 	// On new Entity Creation put it there instead of creating new Chunks / Take up new Space
 	struct EntityGroup {
 		std::vector<GroupChunk*> chunks;
-		std::vector<BaseComponent> components;
+		std::vector<BaseComponent*> components;
 		unsigned int id;
 
 	private:
@@ -62,7 +63,7 @@ namespace ecs {
 		Entity* createEmptyEntity();
 		Entity* getEntityById(unsigned int id);
 
-		void addComponent(const Entity& entity, BaseComponent* component);
+		void addComponent(Entity& entity, BaseComponent* component);
 		void addComponent(unsigned int entityID, BaseComponent* component);
 
 		void printComponents(const Entity& entity);
@@ -79,14 +80,13 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Entity Group & Chunk
-		EntityGroup* createEntityGroup(std::vector<BaseComponent> components);
+		EntityGroup* createEntityGroup(std::vector<BaseComponent*> components);
 		void deleteEntityGroup(EntityGroup& group);
 
-		// Adds an Entity to a Group and manages the needed Chunks for that
-		void addEntityToGroup(Entity* entity, EntityGroup& group);
-		void removeEntityFromGroup(Entity* entity, EntityGroup& group);
+		// Move Entity to another Group
+		void moveEntityToGroup(Entity* entity, EntityGroup& group);
 
-		EntityGroup& getGroupByComponents(std::vector<BaseComponent>& components);
+		EntityGroup& getGroupByComponents(std::vector<BaseComponent*>& components);
 
 		GroupChunk* createChunk(EntityGroup& parent);
 

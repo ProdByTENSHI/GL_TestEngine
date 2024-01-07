@@ -12,14 +12,14 @@ namespace ecs {
 	static EntityManager* instance = nullptr;
 
 	EntityManager::EntityManager() {
-		std::vector<BaseComponent> v;
+		std::vector<BaseComponent*> v;
 		m_defaultGroup = createEntityGroup(v);
 	}
 
 	EntityManager::~EntityManager() {
 		// Delete all Entities and free up all resources
 		for (EntityGroup* group : m_entityGroups) {
-			deleteEntityGroup(*group);				// Fick dich doch das klappt noch nicht wegen dem Vector Scheiß
+			deleteEntityGroup(*group);
 		}
 	}
 
@@ -34,7 +34,7 @@ namespace ecs {
 #pragma region Entity
 	Entity* EntityManager::createEmptyEntity() {
 		Entity* entity = new Entity(m_entityCount);
-		addEntityToGroup(entity, *m_defaultGroup);
+		moveEntityToGroup(entity, *m_defaultGroup);
 
 		//logger::Logger::getInstance()->write(std::string("Created Entity"));
 		std::cout << "Created Entity with the ID " << entity->getId() << std::endl;
@@ -69,7 +69,7 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Component
-	void EntityManager::addComponent(const Entity& entity, BaseComponent* component) {
+	void EntityManager::addComponent(Entity& entity, BaseComponent* component) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 		if (component->getType() == ComponentType::None) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " as it is not valid" << std::endl;
@@ -82,14 +82,17 @@ namespace ecs {
 			return;
 		}
 
-		std::cout << "Added " << component->getName() << " : " << component << " : " << " to Entity " << entity.getId() << std::endl;
+		std::cout << "\tAdded " << component->getName() << " : " << component << " : " << " to Entity " << entity.getId() << std::endl;
 
 		// Insert Components into m_entityComponents Vector
 		components.push_back(component);
+
+		// Find Group or Create a new one based on the updated Components
+		moveEntityToGroup(&entity, getGroupByComponents(components));
 	}
 
 	void EntityManager::addComponent(unsigned int entityID, BaseComponent* component) {
-		const Entity* entity = getEntityById(entityID);
+		Entity* entity = getEntityById(entityID);
 		addComponent(*entity, component);
 	}
 
@@ -97,6 +100,7 @@ namespace ecs {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 
 		std::cout << "<=== ENTITY " << entity.getId() << " ===>" << std::endl;
+		std::cout << "\t" << "Entity Group: " << entity.group->id << " : " << entity.group << std::endl;
 		for (unsigned int i = 0; i < components.size(); i++) {
 			std::cout << "\tComponent: " << i << '\t' << components[i]->getName() << " : " << &components[i] << std::endl;
 		}
@@ -125,13 +129,17 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Entity Group & Chunk Management
-	EntityGroup* EntityManager::createEntityGroup(std::vector<BaseComponent> components) {
+	EntityGroup* EntityManager::createEntityGroup(std::vector<BaseComponent*> components) {
 		unsigned int componentSize = (unsigned int)(sizeof(components) / sizeof(components[0]));
 
 		EntityGroup* group = new EntityGroup();
 		group->id = m_groupCount;
 		group->components = components;
 		m_entityGroups.push_back(group);
+
+		std::cout << "<===================================>" << std::endl;
+		std::cout << "Created Group " << group->id << " : " << group << std::endl;
+		std::cout << "\tGroup created with " << components.size() << " Components" << std::endl;
 
 		// Create first Chunk
 		GroupChunk* chunk = createChunk(*group);
@@ -140,17 +148,23 @@ namespace ecs {
 		return group;
 	}
 
-	// TODO: Fix Out Of Bounds Error -> When deleting a Chunk it gets popped of the Vector and therefore the Size and ID of the other Elements change
 	void EntityManager::deleteEntityGroup(EntityGroup& group) {
-		for (auto& chunk : group.chunks) {
-			removeChunk(group, chunk->id);
+		std::cout << "Chunks in Group " << group.id << " : " << group.chunks.size() << std::endl;
+		for (unsigned int i = 0; i < group.chunks.size() - 1; i++) {
+			removeChunk(group, i);
 		}
 
 		//logger::Logger::getInstance()->write("Deleted Group with the ID " + group.id);
 		std::cout << "Deleted Entity Group with the ID: " << group.id << std::endl;
 	}
 
-	void EntityManager::addEntityToGroup(Entity* entity, EntityGroup& group) {
+	void EntityManager::moveEntityToGroup(Entity* entity, EntityGroup& group) {
+		// Remove from previous Group
+		for (unsigned int i = 0; i < group.chunks.size() - 1; i++) {
+			std::cout << "Chunk " << group.chunks[i]->id << std::endl;
+		}
+
+		// Add To Group
 		GroupChunk* chunk = new GroupChunk{ group };
 		int slot = getFreeChunkSlot(*group.chunks[group.chunks.size() - 1]);
 
@@ -163,26 +177,21 @@ namespace ecs {
 
 		chunk = group.chunks[group.chunks.size() - 1];
 		chunk->entities[slot] = entity;
+
+		// Set Group of Entity to this
+		entity->group = &group;
 	}
 
-	void EntityManager::removeEntityFromGroup(Entity* entity, EntityGroup& group) {
-		// Go through each Chunk and look for Entity 
-		//logger::Logger::getInstance()->write(std::string("Removed Entity with the ID " + entity->getId()) + std::string(" from the Group " + group.id));
-	}
-
-	EntityGroup& EntityManager::getGroupByComponents(std::vector<BaseComponent>& components) {
+	EntityGroup& EntityManager::getGroupByComponents(std::vector<BaseComponent*>& components) {
 		if (components.size() == 0)
 			return *m_defaultGroup;
 
-		EntityGroup* entityGroup;
+		EntityGroup* entityGroup = nullptr;
 
 		// Iterate through Groups and check if the Components are the same(Component Order does not matter because of Vector Comparison Implementation -> See ContainerUtility.cpp)
 		for (EntityGroup* group : m_entityGroups) {
-			if (!utility::ContainerUtility::getInstance()->isVectorEqual(group->components, components))
-				continue;
-
-			entityGroup = group;
-			break;
+			if (utility::ContainerUtility::getInstance()->isVectorEqual(group->components, components))
+				return *group;
 		}
 
 		// Create new Group if non was found with the given components
@@ -196,10 +205,8 @@ namespace ecs {
 		chunk->id = group.chunks.size();
 
 		group.chunks.push_back(chunk);
-		std::cout << "Created Chunk " << chunk->id << " with the Memory Adress: " << chunk << std::endl;
+		std::cout << "Created Chunk " << chunk->id << " : " << chunk << std::endl;
 
-		//logger::Logger::getInstance()->write("Created new Chunk");
-		std::cout << "Created new Chunk with the ID " << chunk->id << " for the Group " << group.id << std::endl;
 		return chunk;
 	}
 
@@ -211,7 +218,6 @@ namespace ecs {
 		// Delete all Entities from the Chunk
 		unsigned int entitySize = (sizeof(chunk->entities) / sizeof(chunk->entities[0]));
 		for (unsigned int i = 0; i < entitySize; i++) {
-			std::cout << "Removed Entity : " << i << " : " << chunk->entities[i] << std::endl;
 			delete chunk->entities[i];
 		}
 

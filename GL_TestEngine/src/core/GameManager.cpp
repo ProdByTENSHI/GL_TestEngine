@@ -42,15 +42,19 @@ namespace core {
 		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(7);
 		ecs::EntityManager::getInstance()->printComponents(*test);
 
+		if (new ecs::TransformComponent(glm::vec3(10.0f, 10.0f, 10.0f)) == ecs::EntityManager::getInstance()->getComponentByType(*test, ecs::ComponentType::Transform))
+			std::cout << "NICE" << std::endl;
+
 		m_isRunning = true;
 	}
 
 	GameManager::~GameManager() {
 		delete ecs::EntityManager::getInstance();
+
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
 
-		logger::Logger::getInstance()->write("Game Closed!");
+		logger::Logger::getInstance()->write("Engine Closed!");
 	}
 
 	void GameManager::update() {

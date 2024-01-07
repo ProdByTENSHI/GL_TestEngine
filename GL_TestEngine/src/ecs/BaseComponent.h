@@ -11,10 +11,9 @@ namespace ecs {
 
 	class BaseComponent {
 	public:
-		friend bool operator==(const BaseComponent& lhs, const BaseComponent& rhs) { return lhs.m_name == rhs.m_name; }
-		friend bool operator!=(const BaseComponent& lhs, const BaseComponent& rhs) { return !(lhs.m_name == rhs.m_name); }
-		friend bool operator<(const BaseComponent& lhs, const BaseComponent& rhs) { return (int)lhs.m_type < (int)rhs.m_type; }
-		friend bool operator>(const BaseComponent& lhs, const BaseComponent& rhs) { return (int)lhs.m_type > (int)rhs.m_type; }
+		friend bool operator==(const BaseComponent& lhs, const BaseComponent& rhs) { return lhs.m_type == rhs.m_type; }
+		friend bool operator!=(const BaseComponent& lhs, const BaseComponent& rhs) { return !(lhs.m_type == rhs.m_type); }
+		friend std::ostream& operator<<(std::ostream& os, const BaseComponent& component) { os << component.m_name << " : " << component.m_type; return os; }
 
 		virtual inline const ComponentType getType() { return m_type; }
 		virtual inline const std::string& getName() { return m_name; }
@@ -23,7 +22,7 @@ namespace ecs {
 	protected:
 		ComponentType m_type = ComponentType::None;
 
-		std::string m_name = "Undefined";	// TODO: Use Hash to speed up operations?
-		bool m_isUnique = true;				// If this is True the Component cannot be added twice to an Entity
+		const std::string m_name = "Undefined";
+		const bool m_isUnique = true;				// If this is True the Component cannot be added twice to an Entity
 	};
 }

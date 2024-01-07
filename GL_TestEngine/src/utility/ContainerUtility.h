@@ -4,23 +4,27 @@
 #include <algorithm>
 #include <unordered_set>
 
+#include <iostream>
+
 namespace utility {
 	class ContainerUtility {
 	public:
 		static ContainerUtility* getInstance();
 
-		// This is slow!
 		template<typename T>
 		bool isVectorEqual(std::vector<T>& lhs, std::vector<T>& rhs) {
 			// Before sorting check if both vectors have the same Size
 			if (lhs.size() != rhs.size())
 				return false;
 
-			// Sort Vectors before checking for equality
-			std::sort(rhs.begin(), rhs.end());
-			std::sort(lhs.begin(), lhs.end());
+			for (const auto& lItem : lhs) {
+				for (unsigned int i = 0; i < lhs.size(); i++) {
+					if (*lItem != *rhs[i])
+						return false;
+				}
+			}
 
-			return rhs == lhs;
+			return true;
 		}
 
 	private:

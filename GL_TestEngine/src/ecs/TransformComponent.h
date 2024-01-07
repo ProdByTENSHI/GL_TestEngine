@@ -9,9 +9,6 @@ namespace ecs {
 	public:
 		TransformComponent(glm::vec3 position) { this->position = position; }
 
-		std::string name = "TransformComponent";
-		bool isUnique = true;
-
 		glm::vec3 position;
 
 		inline const ComponentType getType() override { return m_type; }
@@ -21,7 +18,7 @@ namespace ecs {
 	protected:
 		ComponentType m_type = ComponentType::Transform;
 
-		std::string m_name = "Transform Component";
-		bool m_isUnique = true;
+		const std::string m_name = "Transform Component";
+		const bool m_isUnique = true;
 	};
 }
