@@ -36,7 +36,6 @@ namespace ecs {
 		Entity* entity = new Entity(m_entityCount);
 		entity->group = m_defaultGroup;
 
-		//logger::Logger::getInstance()->write(std::string("Created Entity"));
 		std::cout << "Created Entity with the ID " << entity->getId() << " : " << entity << std::endl;
 
 		moveEntityToGroup(*entity, *m_defaultGroup);
@@ -71,9 +70,10 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Component
+	// TODO: Fix inheritance check on Component for correct registry adding
 	void EntityManager::addComponent(Entity& entity, BaseComponent* component) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
-		if (component->getType() == ComponentType::None) {
+		if (component->getType() & ComponentType::None) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " as it is not valid" << std::endl;
 			return;
 		}
@@ -82,6 +82,25 @@ namespace ecs {
 		if (component->isComponentUnique() && std::find(components.begin(), components.end(), component) != components.end()) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " twice as it is unique" << std::endl;
 			return;
+		}
+
+		// Add to the fitting Registry
+		UpdateComponent* updateComponent = dynamic_cast<UpdateComponent*>(component);
+		if (updateComponent != nullptr) {
+			m_updateRegistry.push_back(*updateComponent);
+			std::cout << "Added Update Component " << component->getName() << " to Registry for Entity " << entity.getId() << std::endl;
+		}
+		else {
+			delete updateComponent;
+		}
+
+		RenderComponent* renderComponent = dynamic_cast<RenderComponent*>(component);
+		if (renderComponent != nullptr) {
+			m_renderRegistry.push_back(*renderComponent);
+			std::cout << "Added Render Component " << component->getName() << " to Registry for Entity " << entity.getId() << std::endl;
+		}
+		else {
+			delete renderComponent;
 		}
 
 		std::cout << "\tAdded " << component->getName() << " : " << component << " : " << " to Entity " << entity.getId() << std::endl;
@@ -159,10 +178,10 @@ namespace ecs {
 			removeChunk(group, i);
 		}
 
-		//logger::Logger::getInstance()->write("Deleted Group with the ID " + group.id);
 		std::cout << "Deleted Entity Group with the ID: " << group.id << std::endl;
 	}
 
+	// TODO: Delete old Group when it's not used anymore
 	void EntityManager::moveEntityToGroup(Entity& entity, EntityGroup& group) {
 		// Remove from old Group(Dont look at the nested for-loops pls)
 		for (unsigned int i = 0; i < entity.group->chunks.size(); i++) {
@@ -240,7 +259,6 @@ namespace ecs {
 		// Remove Chunks from group.chunks Vector
 		group.chunks.erase(group.chunks.begin() + id);
 
-		//logger::Logger::getInstance()->write("Removed Chunk ");
 		std::cout << "Removed Chunk " << id << " from the Group " << group.id << " : " << chunk << std::endl;
 
 		delete chunk;
@@ -248,7 +266,6 @@ namespace ecs {
 
 	GroupChunk* EntityManager::getChunk(EntityGroup& group, unsigned int id) {
 		if (id > group.chunks.size()) {
-			//logger::Logger::getInstance()->write("Chunk does not exist. ID: ");
 			std::cout << "Chunk with the ID: " << id << " does not exist in Group " << group.id << std::endl;
 			return nullptr;
 		}
@@ -265,6 +282,20 @@ namespace ecs {
 		}
 
 		return -1;
+	}
+#pragma endregion
+
+#pragma region Registry
+	void EntityManager::update() {
+		for (auto& component : m_updateRegistry) {
+			component.update();
+		}
+	}
+
+	void EntityManager::render() {
+		for (auto& component : m_renderRegistry) {
+			component.render();
+		}
 	}
 #pragma endregion
 }

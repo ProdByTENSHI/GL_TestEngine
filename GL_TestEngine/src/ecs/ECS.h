@@ -4,6 +4,8 @@
 #include <map>
 
 #include "BaseComponent.h"
+#include "UpdateComponent.h"
+#include "RenderComponent.h"
 
 namespace ecs {
 	// Das muss vorher weil der Nuttensohn Compiler sonst rummeckert und die scheiﬂ Structs nicht kennt
@@ -70,6 +72,9 @@ namespace ecs {
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
 
+		void update();
+		void render();
+
 	private:
 		// Singleton Stuff
 		EntityManager();
@@ -104,6 +109,9 @@ namespace ecs {
 
 		std::vector<EntityGroup*> m_entityGroups;
 		std::map<unsigned int, std::vector<BaseComponent*>> m_entityComponents;		// Stores the Components for each Entity in a Map assosiacted with the Entity ID
+
+		std::vector<UpdateComponent> m_updateRegistry;								// Holds all Components that inherit from the UpdateComponent
+		std::vector<RenderComponent> m_renderRegistry;								// Holds all Components that inherit from the RenderComponent
 
 		EntityGroup* m_defaultGroup;												// The Default Group does ot have any Components and is used for Componentless Entities
 	};

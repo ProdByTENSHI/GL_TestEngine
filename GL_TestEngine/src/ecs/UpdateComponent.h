@@ -3,6 +3,6 @@
 namespace ecs {
 	class UpdateComponent {
 	public:
-		virtual void update();
+		virtual void update() { }
 	};
 }

@@ -42,16 +42,23 @@ namespace core {
 
 	GameManager::~GameManager() {
 		delete ecs::EntityManager::getInstance();
+
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
 
 		logger::Logger::getInstance()->write("Engine Closed!");
+
+		delete logger::Logger::getInstance();
 	}
 
 	void GameManager::update() {
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
+			ecs::EntityManager::getInstance()->update();
+
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			ecs::EntityManager::getInstance()->render();
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();
