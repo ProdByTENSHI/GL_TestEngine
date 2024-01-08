@@ -35,7 +35,7 @@ namespace core {
 
 		entity = &ecs::EntityManager::getInstance()->createEmptyEntity();
 		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::TransformComponent(glm::vec3(100.0f, 100.0f, 50.0f)));
-		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::MeshComponent("res/models/test.obj", *shader));
+		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::MeshComponent("res/models/ambulance.obj", *shader));
 
 		m_isRunning = true;
 	}

@@ -70,7 +70,6 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Component
-	// TODO: Fix inheritance check on Component for correct registry adding
 	void EntityManager::addComponent(Entity& entity, BaseComponent* component) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 		if (component->getType() & ComponentType::None) {
@@ -85,23 +84,17 @@ namespace ecs {
 		}
 
 		// Add to the fitting Registry
-		UpdateComponent* updateComponent = dynamic_cast<UpdateComponent*>(component);
-		if (updateComponent != nullptr) {
-			m_updateRegistry.push_back(*updateComponent);
-			std::cout << "Added Update Component " << component->getName() << " to Registry for Entity " << entity.getId() << std::endl;
-		}
-		else {
-			delete updateComponent;
-		}
+		UpdateComponent* updateComp = dynamic_cast<UpdateComponent*>(component);
+		if (updateComp != nullptr)
+			m_updateRegistry.push_back(updateComp);
+		else
+			delete updateComp;
 
-		RenderComponent* renderComponent = dynamic_cast<RenderComponent*>(component);
-		if (renderComponent != nullptr) {
-			m_renderRegistry.push_back(*renderComponent);
-			std::cout << "Added Render Component " << component->getName() << " to Registry for Entity " << entity.getId() << std::endl;
-		}
-		else {
-			delete renderComponent;
-		}
+		RenderComponent* renderComp = dynamic_cast<RenderComponent*>(component);
+		if (renderComp != nullptr)
+			m_renderRegistry.push_back(renderComp);
+		else
+			delete renderComp;
 
 		std::cout << "\tAdded " << component->getName() << " : " << component << " : " << " to Entity " << entity.getId() << std::endl;
 
@@ -134,7 +127,7 @@ namespace ecs {
 
 	BaseComponent* EntityManager::getComponentByType(const Entity& entity, ComponentType type) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
-		if (type == ComponentType::None) {
+		if (type & ComponentType::None) {
 			std::cout << "Cannot get Invalid Component from Entity " << entity.getId() << std::endl;
 			return nullptr;
 		}
@@ -288,13 +281,13 @@ namespace ecs {
 #pragma region Registry
 	void EntityManager::update() {
 		for (auto& component : m_updateRegistry) {
-			component.update();
+			component->update();
 		}
 	}
 
 	void EntityManager::render() {
 		for (auto& component : m_renderRegistry) {
-			component.render();
+			component->render();
 		}
 	}
 #pragma endregion

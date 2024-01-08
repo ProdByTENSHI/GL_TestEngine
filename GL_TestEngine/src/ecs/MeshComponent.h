@@ -8,7 +8,7 @@
 #include "core/Shader.h"
 
 namespace ecs {
-	class MeshComponent : public BaseComponent, RenderComponent {
+	class MeshComponent : public BaseComponent, public RenderComponent {
 	public:
 		MeshComponent(model::Mesh* mesh, core::Shader& shader) { m_mesh = mesh; m_shader = &shader; }
 		MeshComponent(const std::string& path, core::Shader& shader) { m_mesh = new model::Mesh(path); m_shader = &shader; }

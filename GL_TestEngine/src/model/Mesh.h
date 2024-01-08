@@ -20,9 +20,9 @@
 namespace model {
 	// Total Bytes per Vertex: 32
 	struct VertexData {
-		glm::vec3 position;			// X, Y, Z, 12 Bytes - Offset: 0
-		glm::vec2 textureCoords;	// UVs, 8 Bytes  - Offset: 12
-		glm::vec3 normal;			// X, Y, Z 12 Bytes - Offset 20
+		GLfloat position[3];			// X, Y, Z, 12 Bytes - Offset: 0
+		GLfloat textureCoords[2];	// UVs, 8 Bytes  - Offset: 12
+		GLfloat normal[3];			// X, Y, Z 12 Bytes - Offset 20
 	};
 
 	class Mesh {

@@ -38,9 +38,9 @@ namespace model {
 			m_meshes.push_back(m_scene->mMeshes[i]);
 		}
 
-		m_layout.push<glm::vec3>(1);	// Position
-		m_layout.push<glm::vec2>(1);	// Texture Coords
-		m_layout.push<glm::vec3>(1);	// Normals
+		m_layout.push<GLfloat>(3);	// Position
+		m_layout.push<GLfloat>(2);	// Texture Coords
+		m_layout.push<GLfloat>(3);	// Normals
 
 		m_vao.addBuffer(m_vbo, m_layout);
 
@@ -57,21 +57,21 @@ namespace model {
 
 		// Convert Vertex Position, Color and Texture Coords to Vertex Data
 		for (int i = 0; i < mesh->mNumVertices; i++) {
-			tempData.position.x = mesh->mVertices[i].x;
-			tempData.position.y = mesh->mVertices[i].y;
-			tempData.position.z = mesh->mVertices[i].z;
+			tempData.position[0] = mesh->mVertices[i].x;
+			tempData.position[1] = mesh->mVertices[i].y;
+			tempData.position[2] = mesh->mVertices[i].z;
 
 			if (!mesh->HasTextureCoords(0)) {
 				tempData.textureCoords[0] = 0.0f;
 				tempData.textureCoords[0] = 0.0f;
 			}
 
-			tempData.textureCoords.x = mesh->mTextureCoords[0][i].x;
-			tempData.textureCoords.y = mesh->mTextureCoords[0][i].y;
+			tempData.textureCoords[0] = mesh->mTextureCoords[0][i].x;
+			tempData.textureCoords[1] = mesh->mTextureCoords[0][i].y;
 
-			tempData.normal.x = mesh->mNormals[i].x;
-			tempData.normal.y = mesh->mNormals[i].y;
-			tempData.normal.z = mesh->mNormals[i].z;
+			tempData.normal[0] = mesh->mNormals[i].x;
+			tempData.normal[1] = mesh->mNormals[i].y;
+			tempData.normal[2] = mesh->mNormals[i].z;
 
 			m_verticeData.push_back(tempData);
 		}

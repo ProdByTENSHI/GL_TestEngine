@@ -68,6 +68,8 @@ namespace ecs {
 		void addComponent(Entity& entity, BaseComponent* component);
 		void addComponent(unsigned int entityID, BaseComponent* component);
 
+		void removeComponent(Entity& entity, BaseComponent& component);
+
 		void printComponents(const Entity& entity);
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
@@ -110,8 +112,8 @@ namespace ecs {
 		std::vector<EntityGroup*> m_entityGroups;
 		std::map<unsigned int, std::vector<BaseComponent*>> m_entityComponents;		// Stores the Components for each Entity in a Map assosiacted with the Entity ID
 
-		std::vector<UpdateComponent> m_updateRegistry;								// Holds all Components that inherit from the UpdateComponent
-		std::vector<RenderComponent> m_renderRegistry;								// Holds all Components that inherit from the RenderComponent
+		std::vector<UpdateComponent*> m_updateRegistry;								// Holds all Components that inherit from the UpdateComponent
+		std::vector<RenderComponent*> m_renderRegistry;								// Holds all Components that inherit from the RenderComponent
 
 		EntityGroup* m_defaultGroup;												// The Default Group does ot have any Components and is used for Componentless Entities
 	};
