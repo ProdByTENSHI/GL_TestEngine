@@ -6,7 +6,8 @@
 namespace ecs {
 	enum ComponentType {
 		None = 1 << 0,
-		Transform = 1 << 1
+		Transform = 1 << 1,
+		Mesh = 1 << 2
 	};
 
 	class BaseComponent {

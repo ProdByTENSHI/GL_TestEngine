@@ -13,7 +13,7 @@
 
 namespace core {
 	Shader* shader = nullptr;
-	ecs::Entity* entities[10];
+	ecs::Entity* entity = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -33,14 +33,9 @@ namespace core {
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
 
-		unsigned int entitiesSize = (sizeof(entities) / sizeof(entities[0]));
-		for (unsigned int i = 0; i < entitiesSize; i++) {
-			entities[i] = &ecs::EntityManager::getInstance()->createEmptyEntity();
-			ecs::EntityManager::getInstance()->addComponent(entities[i]->getId(), new ecs::TransformComponent(glm::vec3(20.0f, 20.0f, 20.0f)));
-		}
-
-		ecs::Entity* test = ecs::EntityManager::getInstance()->getEntityById(7);
-		ecs::EntityManager::getInstance()->printComponents(*test);
+		entity = &ecs::EntityManager::getInstance()->createEmptyEntity();
+		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::TransformComponent(glm::vec3(100.0f, 100.0f, 50.0f)));
+		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::MeshComponent("res/models/test.obj", *shader));
 
 		m_isRunning = true;
 	}
