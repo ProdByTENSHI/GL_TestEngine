@@ -84,6 +84,15 @@ namespace ecs {
 
 #pragma region Components
 		std::vector<BaseComponent*>& getEntityComponents(const Entity& entity);
+
+		template <typename T> inline void removeComponentFromRegistry(T& component, std::vector<T*>& registry) {
+			for (unsigned int i = 0; i < registry.size(); i++) {
+				if (registry[i] != &component)
+					continue;
+
+				registry.erase(registry.begin() + i);
+			}
+		}
 #pragma endregion
 
 #pragma region Entity Group & Chunk

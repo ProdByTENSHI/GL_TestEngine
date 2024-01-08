@@ -113,6 +113,37 @@ namespace ecs {
 		addComponent(*entity, component);
 	}
 
+	// TODO: Refactor Component Type Casting into function
+	void EntityManager::removeComponent(Entity& entity, BaseComponent& component) {
+		// Remove Component from Registries
+		UpdateComponent* updateComp = dynamic_cast<UpdateComponent*>(&component);
+		if (updateComp != nullptr) {
+			removeComponentFromRegistry<UpdateComponent>(*updateComp, m_updateRegistry);
+			std::cout << "Removed " << component.getName() << " from the Update Registry" << std::endl;
+		}
+		else {
+			delete updateComp;
+		}
+
+		RenderComponent* renderComp = dynamic_cast<RenderComponent*>(&component);
+		if (updateComp != nullptr) {
+			removeComponentFromRegistry<RenderComponent>(*renderComp, m_renderRegistry);
+			std::cout << "Removed " << component.getName() << " from the Render Registry" << std::endl;
+		}
+		else {
+			delete renderComp;
+		}
+
+		// Remove Component from the Entity-Components Vector
+		for (unsigned int i = 0; i < m_entityComponents[entity.getId()].size(); i++) {
+			if (*m_entityComponents[entity.getId()][i] != component)
+				continue;
+
+			m_entityComponents[entity.getId()].erase(m_entityComponents[entity.getId()].begin() + i);
+			break;
+		}
+	}
+
 	void EntityManager::printComponents(const Entity& entity) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 

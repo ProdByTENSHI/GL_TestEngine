@@ -9,6 +9,6 @@ out vec2 v_TexCoord;
 void main()
 {
 	gl_Position = vec4(aPos, 1.0);
-	v_Color = vec3(1.0, 1.0, 1.0);
+	v_Color = vec3(0.5, 1.0, 1.0);
 	v_TexCoord = aTexCoord;
 }
