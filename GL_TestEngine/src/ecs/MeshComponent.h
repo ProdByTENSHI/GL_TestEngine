@@ -13,7 +13,7 @@ namespace ecs {
 		MeshComponent(model::Mesh* mesh, core::Shader& shader) { m_mesh = mesh; m_shader = &shader; }
 		MeshComponent(const std::string& path, core::Shader& shader) { m_mesh = new model::Mesh(path); m_shader = &shader; }
 
-		void render() override;
+		void render(glm::vec3 position, const char* positionUniform) override;
 
 		inline const ComponentType getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }

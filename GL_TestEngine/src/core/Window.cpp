@@ -10,6 +10,9 @@ namespace core {
 			return;
 		}
 
+		m_width = m_INIT_WIDTH;
+		m_height = m_INIT_HEIGHT;
+
 		// Set Window Hints
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -32,17 +35,5 @@ namespace core {
 
 	GLFWwindow* Window::getWindow() {
 		return m_window;
-	}
-
-	const int Window::getWidth() {
-		int width;
-		glfwGetWindowSize(m_window, &width, NULL);
-		return width;
-	}
-
-	const int Window::getHeight() {
-		int height;
-		glfwGetWindowSize(m_window, NULL, &height);
-		return m_INIT_HEIGHT;
 	}
 }

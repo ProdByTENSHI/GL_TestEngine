@@ -85,11 +85,4 @@ namespace model {
 			}
 		}
 	}
-
-	void Mesh::render(core::Shader& shader) {
-		shader.bind();
-		m_vao.bind();
-		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
-		m_vao.unbind();
-	}
 }

@@ -35,7 +35,10 @@ namespace model {
 
 		// Load all Informations from the Mesh into the Vectors
 		void processMesh(aiMesh* mesh);
-		void render(core::Shader& shader);
+
+		// Getter
+		const memory::VAO& getVao() { return m_vao; }
+		const std::vector<GLuint>& getIndices() { return m_indices; }
 
 	private:
 		const aiScene* m_scene = nullptr;

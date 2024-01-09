@@ -316,6 +316,8 @@ namespace ecs {
 		}
 	}
 
+	// MAANNN ICH MUSS IRGENDWIE DIE POSITION BEKOMMEN ABER WEIß NICHT WIE
+	// EINFACH DAS SCHEIß PROJEKT LÖSCHEN UND UNITY DIE DRECKIGE SCHEIß ENGINE BENUTZEN 
 	void EntityManager::render() {
 		for (auto& component : m_renderRegistry) {
 			component->render();

@@ -11,6 +11,6 @@ uniform mat4 u_CameraMatrix;
 void main()
 {
 	gl_Position = u_CameraMatrix * vec4(aPos, 1.0);
-	v_Color = vec3(0.5, 1.0, 1.0);
+	v_Color = vec3(1.0, 1.0, 1.0);
 	v_TexCoord = aTexCoord;
 }
