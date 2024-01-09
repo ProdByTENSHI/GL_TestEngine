@@ -32,6 +32,7 @@ namespace core {
 		glEnable(GL_DEPTH_TEST);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
+		m_camera = new camera::Camera(60.0f, 0.1f, 100.0f, glm::vec3(0.0f, 2.0f, 5.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		entity = &ecs::EntityManager::getInstance()->createEmptyEntity();
 		ecs::EntityManager::getInstance()->addComponent(entity->getId(), new ecs::TransformComponent(glm::vec3(100.0f, 100.0f, 50.0f)));
@@ -42,6 +43,8 @@ namespace core {
 
 	GameManager::~GameManager() {
 		delete ecs::EntityManager::getInstance();
+		delete m_camera;
+		delete shader;
 
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
@@ -59,6 +62,8 @@ namespace core {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			ecs::EntityManager::getInstance()->render();
+
+			m_camera->CalculateMVP("u_CameraMatrix");
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();

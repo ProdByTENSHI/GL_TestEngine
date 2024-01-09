@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\ecs\MeshComponent.cpp" />
     <ClCompile Include="src\utility\ContainerUtility.cpp" />
     <ClCompile Include="src\core\ResourceManager.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\ecs\MeshComponent.h" />
     <ClInclude Include="src\ecs\Components.h" />
     <ClInclude Include="src\ecs\RenderComponent.h" />

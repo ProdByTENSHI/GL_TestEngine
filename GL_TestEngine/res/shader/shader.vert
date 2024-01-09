@@ -6,9 +6,11 @@ layout (location = 2) in vec3 aNormal;
 out vec3 v_Color;
 out vec2 v_TexCoord;
 
+uniform mat4 u_CameraMatrix;
+
 void main()
 {
-	gl_Position = vec4(aPos, 1.0);
+	gl_Position = u_CameraMatrix * vec4(aPos, 1.0);
 	v_Color = vec3(0.5, 1.0, 1.0);
 	v_TexCoord = aTexCoord;
 }
