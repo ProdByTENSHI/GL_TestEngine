@@ -2,9 +2,9 @@
 
 #include <glm/glm.hpp>
 
-namespace ecs {
+namespace engine {
 	class RenderComponent {
 	public:
-		virtual void render(glm::vec3 position, const char* positionUniform) { }
+		virtual void render() { }
 	};
 }

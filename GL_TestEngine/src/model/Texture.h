@@ -5,7 +5,7 @@
 
 #include "stb_image.h"
 
-namespace model {
+namespace engine {
 	class Texture {
 	public:
 		Texture(const std::string& path);

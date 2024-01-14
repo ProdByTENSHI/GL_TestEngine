@@ -3,7 +3,7 @@
 #include "VBO.h"
 #include "VertexBufferLayout.h"
 
-namespace memory {
+namespace engine {
 	class VAO {
 	public:
 		VAO();

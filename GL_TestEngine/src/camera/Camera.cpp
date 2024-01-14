@@ -1,7 +1,9 @@
 #include "Camera.h"
 
-namespace camera {
-	Camera::Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, core::Shader& shader) {
+#include <iostream>
+
+namespace engine {
+	Camera::Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader) {
 		m_fov = FOV;
 		m_nearPlane = nearPlane;
 		m_farPlane = farPlane;
@@ -13,13 +15,14 @@ namespace camera {
 	}
 
 	void Camera::CalculateMVP(const char* uniform) {
+		m_shader->bind();
 		glm::mat4 view = glm::mat4(1.0f);
 		glm::mat4 projection = glm::mat4(1.0f);
 
 		view = glm::lookAt(m_position, m_position + m_orientation, m_up);
 		projection = glm::perspective(glm::radians(m_fov), (float)(m_screenWidth / m_screenHeight), m_nearPlane, m_farPlane);
 
-		//m_shader->setUniformMat4();
-		glUniformMatrix4fv(glGetUniformLocation(m_shader->getProgram(), uniform), 1, GL_FALSE, glm::value_ptr(projection * view));
+		m_shader->setUniformMat4("u_CameraMatrix", projection * view);
+		m_shader->unbind();
 	}
 }

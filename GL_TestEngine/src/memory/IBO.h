@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-namespace memory {
+namespace engine {
 	class IBO {
 	public:
 		IBO();

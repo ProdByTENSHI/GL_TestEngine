@@ -6,8 +6,9 @@
 
 #include "logger/Logger.h"
 #include "utility/ContainerUtility.h"
+#include "TransformComponent.h"
 
-namespace ecs {
+namespace engine {
 #pragma region Entity Manager
 	static EntityManager* instance = nullptr;
 
@@ -72,7 +73,7 @@ namespace ecs {
 #pragma region Component
 	void EntityManager::addComponent(Entity& entity, BaseComponent* component) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
-		if (component->getType() & ComponentType::None) {
+		if (component->getType() & ComponentType::InvalidComponent) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " as it is not valid" << std::endl;
 			return;
 		}
@@ -158,7 +159,7 @@ namespace ecs {
 
 	BaseComponent* EntityManager::getComponentByType(const Entity& entity, ComponentType type) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
-		if (type & ComponentType::None) {
+		if (type & ComponentType::InvalidComponent) {
 			std::cout << "Cannot get Invalid Component from Entity " << entity.getId() << std::endl;
 			return nullptr;
 		}
@@ -197,23 +198,27 @@ namespace ecs {
 	}
 
 	void EntityManager::deleteEntityGroup(EntityGroup& group) {
-		std::cout << "Chunks in Group " << group.id << " : " << group.chunks.size() << std::endl;
 		for (unsigned int i = 0; i < group.chunks.size(); i++) {
 			removeChunk(group, i);
 		}
 
-		std::cout << "Deleted Entity Group with the ID: " << group.id << std::endl;
+		std::cout << "Deleted Group " << group.id << std::endl;
+
+		delete& group;
 	}
 
-	// TODO: Delete old Group when it's not used anymore
 	void EntityManager::moveEntityToGroup(Entity& entity, EntityGroup& group) {
+		unsigned int groupEntityCounter = 0;
+
 		// Remove from old Group(Dont look at the nested for-loops pls)
 		for (unsigned int i = 0; i < entity.group->chunks.size(); i++) {
 			unsigned int entitySize = (unsigned int)(sizeof(entity.group->chunks[i]->entities) / sizeof(entity.group->chunks[i]->entities[0]));
 			for (unsigned int e = 0; e < entitySize; e++) {
-				if (entity.group->chunks[i]->entities[e] == &entity) {
+				if (entity.group->chunks[i]->entities[e] == &entity)
 					entity.group->chunks[i]->entities[e] = nullptr;
-				}
+
+				if (entity.group->chunks[i]->entities[e] != nullptr)
+					groupEntityCounter++;
 			}
 		}
 
@@ -234,6 +239,10 @@ namespace ecs {
 		// Set Group of Entity to this
 		entity.group = &group;
 
+		// Delete old Group if it doesn't have anymore Entities
+		if (groupEntityCounter == 0 && entity.group->id != group.id)
+			deleteEntityGroup(*entity.group);
+
 		std::cout << "Moved Entity " << entity.getId() << " to Group " << group.id << std::endl;
 	}
 
@@ -245,7 +254,7 @@ namespace ecs {
 
 		// Iterate through Groups and check if the Components are the same(Component Order does not matter because of Vector Comparison Implementation -> See ContainerUtility.cpp)
 		for (EntityGroup* group : m_entityGroups) {
-			if (utility::ContainerUtility::getInstance()->isVectorEqual(group->components, components))
+			if (ContainerUtility::getInstance()->isVectorEqual(group->components, components))
 				return *group;
 		}
 
@@ -310,14 +319,12 @@ namespace ecs {
 #pragma endregion
 
 #pragma region Registry
-	void EntityManager::update() {
+	void EntityManager::update(Shader& shader) {
 		for (auto& component : m_updateRegistry) {
-			component->update();
+			component->update(shader, "u_ObjectPosition");
 		}
 	}
 
-	// MAANNN ICH MUSS IRGENDWIE DIE POSITION BEKOMMEN ABER WEIß NICHT WIE
-	// EINFACH DAS SCHEIß PROJEKT LÖSCHEN UND UNITY DIE DRECKIGE SCHEIß ENGINE BENUTZEN 
 	void EntityManager::render() {
 		for (auto& component : m_renderRegistry) {
 			component->render();

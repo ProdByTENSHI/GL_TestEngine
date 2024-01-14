@@ -3,7 +3,7 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-	core::GameManager* manager = new core::GameManager();
+	engine::GameManager* manager = new engine::GameManager();
 	manager->update();
 
 	delete manager;

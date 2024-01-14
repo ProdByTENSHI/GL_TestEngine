@@ -105,6 +105,10 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)thirdparty\Assimp\lib\x64;$(SolutionDir)thirdparty\glfw-3.3.8.bin.WIN64\lib;$(SolutionDir)thirdparty\glew-2.1.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -141,6 +145,10 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)thirdparty\Assimp\lib\x64;$(SolutionDir)thirdparty\glfw-3.3.8.bin.WIN64\lib;$(SolutionDir)thirdparty\glew-2.1.0\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\camera\Camera.cpp" />
@@ -151,7 +159,7 @@
     <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\memory\IBO.cpp" />
     <ClCompile Include="src\model\Mesh.cpp" />
-    <ClCompile Include="src\core\Shader.cpp" />
+    <ClCompile Include="src\renderer\Shader.cpp" />
     <ClCompile Include="src\core\GameManager.cpp" />
     <ClCompile Include="src\core\Main.cpp" />
     <ClCompile Include="src\core\Window.cpp" />
@@ -173,7 +181,7 @@
     <ClInclude Include="src\memory\IBO.h" />
     <ClInclude Include="src\memory\VertexBufferLayout.h" />
     <ClInclude Include="src\model\Mesh.h" />
-    <ClInclude Include="src\core\Shader.h" />
+    <ClInclude Include="src\renderer\Shader.h" />
     <ClInclude Include="src\core\GameManager.h" />
     <ClInclude Include="src\core\Window.h" />
     <ClInclude Include="src\model\Texture.h" />

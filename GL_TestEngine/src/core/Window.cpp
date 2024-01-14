@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace core {
+namespace engine {
 	Window::Window() {
 		m_window = glfwCreateWindow(m_INIT_WIDTH, m_INIT_HEIGHT, m_TITLE, NULL, NULL);
 		if (m_window == nullptr) {

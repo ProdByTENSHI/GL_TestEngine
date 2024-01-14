@@ -4,14 +4,14 @@
 #include <iostream>
 #include "logger/Logger.h"
 
-namespace model {
+namespace engine {
 	Texture::Texture(const std::string& path)
 		: m_filePath(path) {
 		stbi_set_flip_vertically_on_load(1);
 
 		m_data = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
 		if (!m_data)
-			logger::Logger::getInstance()->write(std::string("Could not load Texture from Path: " + path));
+			Logger::getInstance()->write(std::string("Could not load Texture from Path: " + path));
 
 		glGenTextures(1, &m_textureBuffer);
 		glBindTexture(GL_TEXTURE_2D, m_textureBuffer);
@@ -29,7 +29,7 @@ namespace model {
 		if (m_data)
 			stbi_image_free(m_data);
 
-		logger::Logger::getInstance()->write(std::string("Loaded Texture " + path));
+		Logger::getInstance()->write(std::string("Loaded Texture " + path));
 	}
 
 	Texture::~Texture() {

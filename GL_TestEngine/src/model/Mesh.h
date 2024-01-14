@@ -10,19 +10,19 @@
 
 #include <glm/glm.hpp>
 
-#include "core/Shader.h"
+#include "renderer/Shader.h"
 #include "Texture.h"
 
 #include "memory/VBO.h"
 #include "memory/VAO.h"
 #include "memory/IBO.h"
 
-namespace model {
+namespace engine {
 	// Total Bytes per Vertex: 32
 	struct VertexData {
 		GLfloat position[3];			// X, Y, Z, 12 Bytes - Offset: 0
-		GLfloat textureCoords[2];	// UVs, 8 Bytes  - Offset: 12
-		GLfloat normal[3];			// X, Y, Z 12 Bytes - Offset 20
+		GLfloat textureCoords[2];		// UVs, 8 Bytes  - Offset: 12
+		GLfloat normal[3];				// X, Y, Z 12 Bytes - Offset 20
 	};
 
 	class Mesh {
@@ -36,9 +36,7 @@ namespace model {
 		// Load all Informations from the Mesh into the Vectors
 		void processMesh(aiMesh* mesh);
 
-		// Getter
-		const memory::VAO& getVao() { return m_vao; }
-		const std::vector<GLuint>& getIndices() { return m_indices; }
+		void render(Shader& shader);
 
 	private:
 		const aiScene* m_scene = nullptr;
@@ -47,9 +45,9 @@ namespace model {
 		std::vector<aiMesh*> m_meshes;
 		std::vector<GLuint> m_indices;
 
-		memory::VBO m_vbo;
-		memory::VAO m_vao;
-		memory::IBO m_ibo;
-		memory::VertexBufferLayout m_layout;
+		VBO m_vbo;
+		VAO m_vao;
+		IBO m_ibo;
+		VertexBufferLayout m_layout;
 	};
 }

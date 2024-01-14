@@ -1,8 +1,10 @@
 #pragma once
 
-namespace ecs {
+#include "renderer/Shader.h"
+
+namespace engine {
 	class UpdateComponent {
 	public:
-		virtual void update() { }
+		virtual void update(Shader& shader, const char* uniform) { }
 	};
 }

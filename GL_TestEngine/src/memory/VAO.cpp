@@ -1,6 +1,6 @@
 #include "VAO.h"
 
-namespace memory {
+namespace engine {
 	VAO::VAO() {
 		glGenBuffers(1, &m_rendererID);
 	}

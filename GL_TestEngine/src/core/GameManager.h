@@ -4,7 +4,7 @@
 #include "logger/Logger.h"
 #include "camera/Camera.h"
 
-namespace core {
+namespace engine {
 	class GameManager {
 	public:
 		GameManager();
@@ -17,6 +17,6 @@ namespace core {
 		bool m_isRunning = false;
 
 		Window* m_window = nullptr;
-		camera::Camera* m_camera = nullptr;
+		Camera* m_camera = nullptr;
 	};
 }

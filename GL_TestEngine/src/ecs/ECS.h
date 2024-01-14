@@ -7,7 +7,7 @@
 #include "UpdateComponent.h"
 #include "RenderComponent.h"
 
-namespace ecs {
+namespace engine {
 	// Das muss vorher weil der Nuttensohn Compiler sonst rummeckert und die scheiﬂ Structs nicht kennt
 	struct EntityGroup;
 	struct GroupChunk;
@@ -74,7 +74,7 @@ namespace ecs {
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
 
-		void update();
+		void update(Shader& shader);
 		void render();
 
 	private:

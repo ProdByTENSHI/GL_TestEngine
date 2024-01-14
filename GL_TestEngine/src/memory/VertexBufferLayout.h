@@ -4,7 +4,7 @@
 
 #include <GL/glew.h>
 
-namespace memory {
+namespace engine {
 	struct VertexBufferElement {
 		GLuint type;
 		GLuint count;

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace logger {
+namespace engine {
 	static Logger* instance;
 
 	Logger::Logger() {}

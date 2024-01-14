@@ -3,11 +3,11 @@
 #include <string>
 #include <iostream>
 
-namespace ecs {
+namespace engine {
 	enum ComponentType {
-		None = 1 << 0,
-		Transform = 1 << 1,
-		Mesh = 1 << 2
+		InvalidComponent = 1 << 0,
+		TransformType = 1 << 1,
+		MeshType = 1 << 2
 	};
 
 	class BaseComponent {
@@ -20,8 +20,11 @@ namespace ecs {
 		virtual inline const std::string& getName() { return m_name; }
 		virtual inline const bool isComponentUnique() { return m_isUnique; }
 
+		virtual void OnAdd() { }		// Gets called when the Component is added to an Entity
+		virtual void OnRemove() { }		// Gets called when the Component is removed from an Entity
+
 	protected:
-		ComponentType m_type = ComponentType::None;
+		ComponentType m_type = ComponentType::InvalidComponent;
 
 		const std::string m_name = "Undefined";
 		const bool m_isUnique = true;				// If this is True the Component cannot be added twice to an Entity

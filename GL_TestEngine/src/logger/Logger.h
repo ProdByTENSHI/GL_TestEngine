@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace logger {
+namespace engine {
 	class Logger {
 	public:
 		static Logger* getInstance();

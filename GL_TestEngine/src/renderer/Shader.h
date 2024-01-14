@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace core {
+namespace engine {
 	constexpr unsigned int INVALID_SHADER = 0xFFFFF;
 
 	class Shader {

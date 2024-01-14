@@ -5,7 +5,7 @@
 
 #include "logger/Logger.h"
 
-namespace model {
+namespace engine {
 	Mesh::Mesh(const std::string& meshPath) {
 		loadMesh(meshPath);
 	}
@@ -26,7 +26,7 @@ namespace model {
 		);
 
 		if (scene == nullptr) {
-			logger::Logger::getInstance()->write("Could not load Mesh from path " + path);
+			Logger::getInstance()->write("Could not load Mesh from path " + path);
 			return;
 		}
 
@@ -38,9 +38,9 @@ namespace model {
 			m_meshes.push_back(m_scene->mMeshes[i]);
 		}
 
-		m_layout.push<GLfloat>(3);	// Position
-		m_layout.push<GLfloat>(2);	// Texture Coords
-		m_layout.push<GLfloat>(3);	// Normals
+		m_layout.push<GLfloat>(3);		// Position
+		m_layout.push<GLfloat>(2);		// Texture Coords
+		m_layout.push<GLfloat>(3);		// Normals
 
 		m_vao.addBuffer(m_vbo, m_layout);
 
@@ -49,7 +49,7 @@ namespace model {
 
 		m_vbo.unbind();
 
-		logger::Logger::getInstance()->write("Loaded Mesh " + path);
+		Logger::getInstance()->write("Loaded Mesh " + path);
 	}
 
 	void Mesh::processMesh(aiMesh* mesh) {
@@ -84,5 +84,15 @@ namespace model {
 				m_indices.push_back(face.mIndices[j]);
 			}
 		}
+	}
+
+	void Mesh::render(Shader& shader) {
+		shader.bind();
+		m_vao.bind();
+
+		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
+
+		m_vao.unbind();
+		shader.unbind();
 	}
 }

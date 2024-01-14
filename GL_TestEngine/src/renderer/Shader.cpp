@@ -3,9 +3,10 @@
 #include <iostream>
 #include <fstream>
 
+#include <glm/gtc/type_ptr.hpp>
 #include "logger/Logger.h"
 
-namespace core {
+namespace engine {
 	Shader::Shader() {}
 
 	Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
@@ -15,7 +16,7 @@ namespace core {
 
 		create(vertexSource, fragmentSource);
 
-		logger::Logger::getInstance()->write("Loaded Shader " + vertexPath + " : " + fragmentPath);
+		Logger::getInstance()->write("Loaded Shader " + vertexPath + " : " + fragmentPath);
 	}
 
 	Shader::~Shader() {
@@ -50,7 +51,7 @@ namespace core {
 			GLchar errorMessage[1024];
 			glGetShaderInfoLog(id, logSize, &logSize, errorMessage);
 
-			logger::Logger::getInstance()->write(typeStr + " : " + errorMessage);
+			Logger::getInstance()->write(typeStr + " : " + errorMessage);
 
 			glDeleteShader(id);
 			return INVALID_SHADER;
@@ -114,7 +115,7 @@ namespace core {
 	}
 
 	void Shader::setUniformMat4(const std::string& name, const glm::mat4& mat) {
-		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
+		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 	}
 
 	GLint Shader::getUniformLocation(const std::string& name) {

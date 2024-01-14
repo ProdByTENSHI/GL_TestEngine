@@ -24,7 +24,7 @@
     <ClCompile Include="src\core\GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\Shader.cpp">
+    <ClCompile Include="src\renderer\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\model\Mesh.cpp">
@@ -68,7 +68,7 @@
     <ClInclude Include="src\core\GameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\Shader.h">
+    <ClInclude Include="src\renderer\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\model\Mesh.h">

@@ -1,7 +1,3 @@
-/* References:
-/* https://learnopengl.com/Getting-started/Camera
-/* https://www.youtube.com/watch?v=86_pQCKOIPk&t=10s&ab_channel=VictorGordan
-*/
 #pragma once
 
 #include <glm/glm.hpp>
@@ -10,12 +6,12 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-#include "core/Shader.h"
+#include "renderer/Shader.h"
 
-namespace camera {
+namespace engine {
 	class Camera {
 	public:
-		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, core::Shader& shader);
+		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader);
 		void CalculateMVP(const char* uniform);
 
 	private:
@@ -30,6 +26,6 @@ namespace camera {
 		glm::vec3 m_orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 m_up = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		core::Shader* m_shader;
+		Shader* m_shader;
 	};
 }
