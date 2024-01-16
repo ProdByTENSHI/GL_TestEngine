@@ -12,12 +12,16 @@
 #include "ecs/ECS.h"
 #include "ecs/Components.h"
 
+#include "ui/DebugUI.h"
+
 #include "time/Time.h"
 
 namespace engine {
 	Shader* shader = nullptr;
 	Entity* entity = nullptr;
 	Entity* cube = nullptr;
+
+	DebugUI* ui = nullptr;
 
 	TransformComponent* transform = nullptr;
 
@@ -38,11 +42,13 @@ namespace engine {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
 
+		ui = new DebugUI(*m_window);
+
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		entity = &EntityManager::getInstance()->createEmptyEntity();
-		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
 		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/archeryrange.obj", *shader));
 
 		cube = &EntityManager::getInstance()->createEmptyEntity();
@@ -72,21 +78,25 @@ namespace engine {
 
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			Time::onUpdateStart();
+			glfwPollEvents();
 
 			transform->rotate(TransformComponent::Y_AXIS, 1.0f * Time::getDeltaTime());
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 			EntityManager::getInstance()->render(*shader);
+			ui->render();
+
+			if (ui->shouldShowWireFrame())
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			else
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 			m_camera->HandleInput(*m_window->getWindow(), 5.0f);
 			m_camera->CalculateMVP();
 
 			glfwSwapBuffers(m_window->getWindow());
-			glfwPollEvents();
 			Time::onUpdateEnd();
 		}
 	}
-
-	// TODO: Implement FixedUpdate
 }

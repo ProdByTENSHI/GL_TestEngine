@@ -76,7 +76,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\imgui\;$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -94,7 +94,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\imgui\;$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -116,7 +116,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\imgui\;$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GL_TestEngine\thirdparty\imgui\;$(SolutionDir)GL_TestEngine\thirdparty\stb\;$(SolutionDir)GL_TestEngine\thirdparty\Assimp\include;$(SolutionDir)GL_TestEngine\thirdparty\glm;$(SolutionDir)GL_TestEngine\thirdparty\glew-2.1.0\include;$(SolutionDir)GL_TestEngine\thirdparty\glfw-3.3.8.bin.WIN64\include;$(SolutionDir)GL_TestEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -151,6 +151,7 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ui\DebugUI.cpp" />
     <ClCompile Include="src\model\Material.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
     <ClCompile Include="src\ecs\ModelComponent.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="thirdparty\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ui\DebugUI.h" />
     <ClInclude Include="src\model\Material.h" />
     <ClInclude Include="src\camera\Camera.h" />
     <ClInclude Include="src\ecs\ModelComponent.h" />
