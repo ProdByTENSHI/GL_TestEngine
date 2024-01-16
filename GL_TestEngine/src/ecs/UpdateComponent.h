@@ -5,6 +5,6 @@
 namespace engine {
 	class UpdateComponent {
 	public:
-		virtual void update(Shader& shader, const char* uniform) { }
+		virtual void update(Shader& shader) { }
 	};
 }

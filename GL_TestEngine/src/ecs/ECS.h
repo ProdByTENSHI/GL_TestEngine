@@ -74,8 +74,7 @@ namespace engine {
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
 
-		void update(Shader& shader);
-		void render();
+		void render(Shader& shader);
 
 	private:
 		// Singleton Stuff

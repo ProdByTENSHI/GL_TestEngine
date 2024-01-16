@@ -104,6 +104,9 @@ namespace engine {
 
 		// Find Group or Create a new one based on the updated Components
 		moveEntityToGroup(entity, getGroupByComponents(components));
+
+		component->OnAdd();
+
 		return component;
 	}
 
@@ -136,6 +139,8 @@ namespace engine {
 		else {
 			delete renderComp;
 		}
+
+		component.OnRemove();
 
 		// Remove Component from the Entity-Components Vector
 		for (unsigned int i = 0; i < m_entityComponents[entity.getId()].size(); i++) {
@@ -321,16 +326,26 @@ namespace engine {
 #pragma endregion
 
 #pragma region Registry
-	void EntityManager::update(Shader& shader) {
-		for (auto& component : m_updateRegistry) {
-			component->update(shader, "u_ObjectPosition");
-		}
-	}
+	void EntityManager::render(Shader& shader) {
+		shader.bind();
 
-	void EntityManager::render() {
-		for (auto& component : m_renderRegistry) {
-			component->render();
+		for (auto& ec : m_entityComponents) {
+			// Update Components
+			for (auto& updateComponent : ec.second) {
+				UpdateComponent* update = dynamic_cast<UpdateComponent*>(updateComponent);
+				if (update != nullptr)
+					update->update(shader);
+			}
+
+			// Render Components
+			for (auto& renderComponent : ec.second) {
+				RenderComponent* render = dynamic_cast<RenderComponent*>(renderComponent);
+				if (render != nullptr)
+					render->render();
+			}
 		}
+
+		shader.unbind();
 	}
 #pragma endregion
 }

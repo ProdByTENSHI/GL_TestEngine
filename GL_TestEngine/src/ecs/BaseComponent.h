@@ -22,7 +22,7 @@ namespace engine {
 		virtual inline const bool isComponentUnique() { return m_isUnique; }
 
 		virtual void OnAdd() { }		// Gets called when the Component is added to an Entity
-		virtual void OnRemove() { }		// Gets called when the Component is removed from an Entity
+		virtual void OnRemove() { }									// Gets called when the Component is removed from an Entity
 
 	protected:
 		ComponentType m_type = ComponentType::InvalidComponent;

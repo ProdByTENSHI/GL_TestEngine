@@ -18,6 +18,8 @@ namespace engine {
 		Material(const aiScene& scene, const aiMesh& mesh);
 		~Material();
 
+		const inline aiMaterial* getMaterial() { return m_material; }
+
 	private:
 		void loadMaterialTextures(aiTextureType type, const std::string& typeName);
 

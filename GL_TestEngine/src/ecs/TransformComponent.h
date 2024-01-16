@@ -21,9 +21,9 @@ namespace engine {
 			this->scale = scale;
 
 			m_modelMatrix = glm::translate(m_modelMatrix, this->position);
-			m_modelMatrix = glm::rotate(m_modelMatrix, glm::degrees(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-			m_modelMatrix = glm::rotate(m_modelMatrix, glm::degrees(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-			m_modelMatrix = glm::rotate(m_modelMatrix, glm::degrees(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+			rotate(X_AXIS, rotation.x);
+			rotate(Y_AXIS, rotation.y);
+			rotate(Z_AXIS, rotation.z);
 			m_modelMatrix = glm::scale(m_modelMatrix, scale);
 		}
 
@@ -32,10 +32,8 @@ namespace engine {
 		}
 
 		// Update the Transform Matrix Uniform of the Object in the Shader
-		void update(Shader& shader, const char* uniform) override {
-			shader.bind();
+		void update(Shader& shader) override {
 			shader.setUniformMat4("u_ObjectTransform", m_modelMatrix);
-			shader.unbind();
 		}
 
 		inline const ComponentType getType() override { return m_type; }
@@ -45,6 +43,10 @@ namespace engine {
 		glm::vec3 position;
 		glm::fquat rotation;
 		glm::vec3 scale;
+
+		const static inline glm::vec3 X_AXIS = glm::vec3(1.0f, 0.0f, 0.0f);
+		const static inline glm::vec3 Y_AXIS = glm::vec3(0.0f, 1.0f, 0.0f);
+		const static inline glm::vec3 Z_AXIS = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	protected:
 		ComponentType m_type = ComponentType::TransformType;

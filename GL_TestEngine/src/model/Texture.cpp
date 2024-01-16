@@ -37,7 +37,6 @@ namespace engine {
 
 		std::cout << "Texture loaded: " << path << " : " <<  this << std::endl;
 
-		ResourceManager::getInstance()->cacheTexture(*this);
 		Logger::getInstance()->write(std::string("Loaded Texture " + path));
 	}
 

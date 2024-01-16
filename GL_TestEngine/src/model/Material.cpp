@@ -12,7 +12,7 @@ namespace engine {
 
 		m_material = scene.mMaterials[mesh.mMaterialIndex];
 
-		// Define here what Texture types to load
+		// Define here what Texture types to load -> For now use Phong
 		loadMaterialTextures(aiTextureType_AMBIENT, "texture_ambient");
 		loadMaterialTextures(aiTextureType_DIFFUSE, "texture_diffuse");
 		loadMaterialTextures(aiTextureType_SPECULAR, "texture_specular");

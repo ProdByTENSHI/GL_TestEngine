@@ -14,6 +14,8 @@ namespace engine {
 		void bind() const;
 		void unbind() const;
 
+		inline const GLuint getID() { return m_rendererID; }
+
 	private:
 		GLuint m_rendererID;
 

@@ -100,12 +100,12 @@ namespace engine {
 	}
 
 	void Model::render(Shader& shader) {
-		shader.bind();
-		m_vao.bind();
+		m_vao.addBuffer(m_vbo, m_layout);
+		m_ibo.bind();
 
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
 
+		m_ibo.unbind();
 		m_vao.unbind();
-		shader.unbind();
 	}
 }

@@ -14,8 +14,8 @@
 namespace engine {
 	class Camera {
 	public:
-		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader);
-		void CalculateMVP(const char* uniform);
+		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, int screenWidth, int screenHeight, Shader& shader);
+		void CalculateMVP();
 		void HandleInput(GLFWwindow& window, float sensitivity);
 
 	private:
@@ -23,8 +23,8 @@ namespace engine {
 		float m_nearPlane = 0.0f;
 		float m_farPlane = 0.0f;
 
-		int m_screenWidth = 0;
-		int m_screenHeight = 0;
+		int m_screenWidth;
+		int m_screenHeight;
 
 		glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 m_orientation = glm::vec3(0.0f, 0.0f, -1.0f);
