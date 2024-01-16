@@ -7,7 +7,8 @@ namespace engine {
 	enum ComponentType {
 		InvalidComponent = 1 << 0,
 		TransformType = 1 << 1,
-		MeshType = 1 << 2
+		ModelType = 1 << 2,
+		LightType = 1 << 3
 	};
 
 	class BaseComponent {

@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 namespace engine {
+	// TODO: Add Window Resizing
 	class Window {
 	public:
 		Window();

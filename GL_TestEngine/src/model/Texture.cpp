@@ -2,10 +2,13 @@
 #include "Texture.h"
 
 #include <iostream>
+#include <stb_image.h>
+
+#include "core/ResourceManager.h"
 #include "logger/Logger.h"
 
 namespace engine {
-	Texture::Texture(const std::string& path)
+	Texture::Texture(const std::string& path, const std::string& type)
 		: m_filePath(path) {
 		stbi_set_flip_vertically_on_load(1);
 
@@ -29,6 +32,12 @@ namespace engine {
 		if (m_data)
 			stbi_image_free(m_data);
 
+		m_textureData.path = path;
+		m_textureData.type = type;
+
+		std::cout << "Texture loaded: " << path << " : " <<  this << std::endl;
+
+		ResourceManager::getInstance()->cacheTexture(*this);
 		Logger::getInstance()->write(std::string("Loaded Texture " + path));
 	}
 

@@ -4,14 +4,14 @@
 
 #include "BaseComponent.h"
 #include "RenderComponent.h"
-#include "model/Mesh.h"
+#include "model/Model.h"
 #include "renderer/Shader.h"
 
 namespace engine {
-	class MeshComponent : public BaseComponent, public RenderComponent {
+	class ModelComponent : public BaseComponent, public RenderComponent {
 	public:
-		MeshComponent(Mesh* mesh, Shader& shader) { m_mesh = mesh; m_shader = &shader; }
-		MeshComponent(const std::string& path, Shader& shader) { m_mesh = new Mesh(path); m_shader = &shader; }
+		ModelComponent(Model* model, Shader& shader) { m_model = model; m_shader = &shader; }
+		ModelComponent(const std::string& meshPath, Shader& shader) { m_model = new Model(meshPath); m_shader = &shader; }
 
 		void render() override;
 
@@ -20,13 +20,13 @@ namespace engine {
 		inline const bool isComponentUnique() override { return m_isUnique; }
 
 	protected:
-		ComponentType m_type = ComponentType::MeshType;
+		ComponentType m_type = ComponentType::ModelType;
 
-		const std::string m_name = "Mesh Component";
+		const std::string m_name = "Model Component";
 		const bool m_isUnique = true;
 
 	private:
-		Mesh* m_mesh = nullptr;
+		Model* m_model = nullptr;
 		Shader* m_shader = nullptr;
 	};
 }

@@ -71,17 +71,17 @@ namespace engine {
 #pragma endregion
 
 #pragma region Component
-	void EntityManager::addComponent(Entity& entity, BaseComponent* component) {
+	BaseComponent* EntityManager::addComponent(Entity& entity, BaseComponent* component) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 		if (component->getType() & ComponentType::InvalidComponent) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " as it is not valid" << std::endl;
-			return;
+			return nullptr;
 		}
 
 		// Make sure that the Component is not already on the Entity if it is Unique
 		if (component->isComponentUnique() && std::find(components.begin(), components.end(), component) != components.end()) {
 			std::cout << "Component " << component->getName() << " cannot be added to Entity " << entity.getId() << " twice as it is unique" << std::endl;
-			return;
+			return nullptr;
 		}
 
 		// Add to the fitting Registry
@@ -104,14 +104,16 @@ namespace engine {
 
 		// Find Group or Create a new one based on the updated Components
 		moveEntityToGroup(entity, getGroupByComponents(components));
+		return component;
 	}
 
-	void EntityManager::addComponent(unsigned int entityID, BaseComponent* component) {
+	BaseComponent* EntityManager::addComponent(unsigned int entityID, BaseComponent* component) {
 		Entity* entity = getEntityById(entityID);
 		if (entity == nullptr)
-			return;
+			return nullptr;
 
 		addComponent(*entity, component);
+		return component;
 	}
 
 	// TODO: Refactor Component Type Casting into function

@@ -65,8 +65,8 @@ namespace engine {
 		Entity& createEmptyEntity();
 		Entity* getEntityById(unsigned int id);
 
-		void addComponent(Entity& entity, BaseComponent* component);
-		void addComponent(unsigned int entityID, BaseComponent* component);
+		BaseComponent* addComponent(Entity& entity, BaseComponent* component);
+		BaseComponent* addComponent(unsigned int entityID, BaseComponent* component);
 
 		void removeComponent(Entity& entity, BaseComponent& component);
 

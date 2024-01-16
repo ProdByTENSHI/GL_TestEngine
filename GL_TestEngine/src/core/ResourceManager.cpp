@@ -14,21 +14,29 @@ namespace engine {
 		return instance;
 	}
 
-	Texture* ResourceManager::loadTexture(const std::string& path) {
+	Texture* ResourceManager::loadTexture(const std::string& path, const std::string& type) {
 		if (doesResourceExist(m_textures, path)) {
 			Logger::getInstance()->write(std::string("Texture " + path + " was already loaded before."));
 			return m_textures[path];
 		}
 		else {
 			Logger::getInstance()->write(std::string("Texture " + path + " was not loaded before."));
-			Texture* texture = new Texture(path);
+			Texture* texture = new Texture(path, type);
 			if (texture == nullptr)
 				return nullptr;
 
-			m_textures.insert(std::make_pair(path, texture));
-
+			cacheTexture(*texture);
 			return texture;
 		}
+	}
+
+	void ResourceManager::cacheTexture(Texture& texture) {
+		if (m_textures[texture.getTextureData().path] == nullptr) {
+			Logger::getInstance()->write(texture.getTextureData().path + " was already cached!");
+			return;
+		}
+
+		m_textures.insert(std::make_pair(texture.getTextureData().path, &texture));
 	}
 
 	const std::unordered_map<std::string, Texture*>& ResourceManager::getTextures() {

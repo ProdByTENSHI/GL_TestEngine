@@ -151,28 +151,33 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\model\Material.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
-    <ClCompile Include="src\ecs\MeshComponent.cpp" />
+    <ClCompile Include="src\ecs\ModelComponent.cpp" />
+    <ClCompile Include="src\model\Texture.cpp" />
+    <ClCompile Include="src\time\Time.cpp" />
     <ClCompile Include="src\utility\ContainerUtility.cpp" />
     <ClCompile Include="src\core\ResourceManager.cpp" />
     <ClCompile Include="src\ecs\ECS.cpp" />
     <ClCompile Include="src\logger\Logger.cpp" />
     <ClCompile Include="src\memory\IBO.cpp" />
-    <ClCompile Include="src\model\Mesh.cpp" />
+    <ClCompile Include="src\model\Model.cpp" />
     <ClCompile Include="src\renderer\Shader.cpp" />
     <ClCompile Include="src\core\GameManager.cpp" />
     <ClCompile Include="src\core\Main.cpp" />
     <ClCompile Include="src\core\Window.cpp" />
-    <ClCompile Include="src\model\Texture.cpp" />
     <ClCompile Include="src\memory\VBO.cpp" />
     <ClCompile Include="src\memory\VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\model\Material.h" />
     <ClInclude Include="src\camera\Camera.h" />
-    <ClInclude Include="src\ecs\MeshComponent.h" />
+    <ClInclude Include="src\ecs\ModelComponent.h" />
     <ClInclude Include="src\ecs\Components.h" />
     <ClInclude Include="src\ecs\RenderComponent.h" />
     <ClInclude Include="src\ecs\UpdateComponent.h" />
+    <ClInclude Include="src\model\TextureData.h" />
+    <ClInclude Include="src\time\Time.h" />
     <ClInclude Include="src\utility\ContainerUtility.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\ecs\BaseComponent.h" />
@@ -180,7 +185,7 @@
     <ClInclude Include="src\logger\Logger.h" />
     <ClInclude Include="src\memory\IBO.h" />
     <ClInclude Include="src\memory\VertexBufferLayout.h" />
-    <ClInclude Include="src\model\Mesh.h" />
+    <ClInclude Include="src\model\Model.h" />
     <ClInclude Include="src\renderer\Shader.h" />
     <ClInclude Include="src\core\GameManager.h" />
     <ClInclude Include="src\core\Window.h" />

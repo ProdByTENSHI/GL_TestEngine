@@ -10,7 +10,10 @@ namespace engine {
 	public:
 		static ResourceManager* getInstance();
 
-		Texture* loadTexture(const std::string& path);
+		Texture* loadTexture(const std::string& path, const std::string& type);
+
+		// Caches the Texture into the m_textures map
+		void cacheTexture(Texture& texture);
 
 		const std::unordered_map<std::string, Texture*>& getTextures();
 		template<typename T> bool doesResourceExist(const std::unordered_map<std::string, T>& map, const std::string& path);

@@ -11,9 +11,14 @@
 #include "ecs/ECS.h"
 #include "ecs/Components.h"
 
+#include "time/Time.h"
+
 namespace engine {
 	Shader* shader = nullptr;
 	Entity* entity = nullptr;
+	Entity* cube = nullptr;
+
+	TransformComponent* transform = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -32,11 +37,11 @@ namespace engine {
 		glEnable(GL_DEPTH_TEST);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
-		m_camera = new Camera(60.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
+		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		entity = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(1.0f, 5.0f, 0.0f)));
-		EntityManager::getInstance()->addComponent(entity->getId(), new MeshComponent("res/models/ambulance.obj", *shader));
+		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/archeryrange.obj", *shader));
 
 		m_isRunning = true;
 	}
@@ -58,6 +63,9 @@ namespace engine {
 
 	void GameManager::update() {
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
+			Time::onUpdateStart();
+
+			transform->rotate(glm::vec3(0.0f, 1.0f, 0.0f), 1.0f * Time::getDeltaTime());
 			EntityManager::getInstance()->update(*shader);
 
 			glClearColor(0.2f, 0.35f, 0.3f, 1.0f);
@@ -65,10 +73,12 @@ namespace engine {
 
 			EntityManager::getInstance()->render();
 
+			m_camera->HandleInput(*m_window->getWindow(), 5.0f);
 			m_camera->CalculateMVP("u_CameraMatrix");
 
 			glfwSwapBuffers(m_window->getWindow());
 			glfwPollEvents();
+			Time::onUpdateEnd();
 		}
 	}
 }

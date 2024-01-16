@@ -1,20 +1,27 @@
-#include "Mesh.h"
+#include "Model.h"
 
 #include <iostream>
 #include <GL/glew.h>
 
+#include <stb_image.h>
+
+#include "core/ResourceManager.h"
 #include "logger/Logger.h"
 
 namespace engine {
-	Mesh::Mesh(const std::string& meshPath) {
-		loadMesh(meshPath);
+	Model::Model(const std::string& meshPath) {
+		loadModel(meshPath);
 	}
 
-	Mesh::~Mesh() {
+	Model::~Model() {
+		for (const auto& material : m_materials) {
+			delete material;
+		}
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-	void Mesh::loadMesh(const std::string& path) {
+	void Model::loadModel(const std::string& path) {
 		Assimp::Importer importer;
 
 		const aiScene* scene = importer.ReadFile(path,
@@ -49,10 +56,10 @@ namespace engine {
 
 		m_vbo.unbind();
 
-		Logger::getInstance()->write("Loaded Mesh " + path);
+		Logger::getInstance()->write("Loaded Model " + path);
 	}
 
-	void Mesh::processMesh(aiMesh* mesh) {
+	void Model::processMesh(aiMesh* mesh) {
 		VertexData tempData;
 
 		// Convert Vertex Position, Color and Texture Coords to Vertex Data
@@ -84,9 +91,15 @@ namespace engine {
 				m_indices.push_back(face.mIndices[j]);
 			}
 		}
+
+		// Load Materials
+		if (mesh->mMaterialIndex >= 0) {
+			Material* material = new Material(*m_scene, *mesh);
+			m_materials.push_back(material);
+		}
 	}
 
-	void Mesh::render(Shader& shader) {
+	void Model::render(Shader& shader) {
 		shader.bind();
 		m_vao.bind();
 

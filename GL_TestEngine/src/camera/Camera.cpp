@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include "time/Time.h"
+
 #include <iostream>
 
 namespace engine {
@@ -24,5 +26,20 @@ namespace engine {
 
 		m_shader->setUniformMat4("u_CameraMatrix", projection * view);
 		m_shader->unbind();
+	}
+
+	void Camera::HandleInput(GLFWwindow& window, float sensitivity) {
+		if (glfwGetKey(&window, GLFW_KEY_W)) {
+			m_position -= sensitivity * m_front * Time::getDeltaTime();
+		}
+		else if (glfwGetKey(&window, GLFW_KEY_S)) {
+			m_position += sensitivity * m_front * Time::getDeltaTime();
+		}
+		else if (glfwGetKey(&window, GLFW_KEY_D)) {
+			m_position -= glm::normalize(glm::cross(m_front, m_up)) * sensitivity * Time::getDeltaTime();
+		}
+		else if (glfwGetKey(&window, GLFW_KEY_A)) {
+			m_position += glm::normalize(glm::cross(m_front, m_up)) * sensitivity * Time::getDeltaTime();
+		}
 	}
 }
