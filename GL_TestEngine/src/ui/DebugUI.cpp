@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "ecs/ECS.h"
 #include "time/Time.h"
 
 namespace engine {
@@ -37,9 +38,10 @@ namespace engine {
 
 		ImGui::Begin("Debug Graph");
 
-		ImGui::Text("FPS: %i", (int)std::round(Time::getFPS()));
+		ImGui::Text("FPS: %f", Time::getFPS());
 		ImGui::Text("Time in Seconds: % f", Time::getTime());
 		ImGui::Text("Delta Time: %f", Time::getDeltaTime());
+		ImGui::Text("Entity Count: %i", EntityManager::getInstance()->getEntityCount());
 		ImGui::Checkbox("Show Wireframe", m_showWireframe);
 
 		ImGui::End();

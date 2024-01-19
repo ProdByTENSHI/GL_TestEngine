@@ -7,6 +7,7 @@
 #include "core/ResourceManager.h"
 #include "logger/Logger.h"
 
+// TODO: Implement Transparency
 namespace engine {
 	Texture::Texture(const std::string& path, const std::string& type)
 		: m_filePath(path) {

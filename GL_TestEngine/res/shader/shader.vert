@@ -11,6 +11,12 @@ uniform mat4 u_ObjectTransform;
 uniform mat4 u_CameraMatrix;
 uniform vec3 u_Diffuse;
 
+struct s_MaterialData {
+	float ambient;
+	float diffuse;
+	float specular;
+};
+
 void main()
 {
 	gl_Position = (u_CameraMatrix * u_ObjectTransform) * vec4(pos, 1.0);

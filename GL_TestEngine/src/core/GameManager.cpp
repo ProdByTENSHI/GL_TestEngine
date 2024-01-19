@@ -46,11 +46,11 @@ namespace engine {
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		entity = &EntityManager::getInstance()->createEmptyEntity();
-		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.5f, 2.0f)));
 		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/box-wide.obj", *shader));
 
 		entity2 = &EntityManager::getInstance()->createEmptyEntity();
-		transform2 = (TransformComponent*)EntityManager::getInstance()->addComponent(entity2->getId(), new TransformComponent(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		transform2 = (TransformComponent*)EntityManager::getInstance()->addComponent(entity2->getId(), new TransformComponent(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
 		EntityManager::getInstance()->addComponent(entity2->getId(), new ModelComponent("res/models/structure-tall.obj", *shader));
 
 		m_isRunning = true;
@@ -72,17 +72,17 @@ namespace engine {
 	}
 
 	void GameManager::update() {
+		float lastFrameTime = 0.0f;
 		glClearColor(0.2f, 0.35f, 0.3f, 1.0f);
 
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			Time::onUpdateStart();
+			glfwPollEvents();
 
 			transform->translate(glm::vec3(0.0f, glm::cos(Time::getTime()) * Time::getDeltaTime(), 0.0f));
 			transform->rotate(TransformComponent::Y_AXIS, 1.0f * Time::getDeltaTime());
-			
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			EntityManager::getInstance()->render(*shader);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 			// Only show Debug UI when in Debug Mode
 #ifndef NDEBUG
@@ -96,8 +96,15 @@ namespace engine {
 			m_camera->HandleInput(*m_window->getWindow(), 5.0f);
 			m_camera->CalculateMVP();
 
-			glfwSwapBuffers(m_window->getWindow());
-			glfwPollEvents();
+			// Cap Render Frame Rate at m_MAX_FPS
+			// TODO: Fix more Memory being allocated the lower the m_MAX_FPS is
+			if ((Time::getTime() - Time::getLastFrameTime()) >= m_MAX_FPS) {
+				Time::onRenderStart();
+				EntityManager::getInstance()->render(*shader);
+				glfwSwapBuffers(m_window->getWindow());
+				Time::onRenderEnd();
+			}
+
 			Time::onUpdateEnd();
 		}
 	}

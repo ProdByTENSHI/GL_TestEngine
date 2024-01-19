@@ -16,6 +16,9 @@ namespace engine {
 		// STATES
 		bool m_isRunning = false;
 
+		// APPLICATION CONSTANTS
+		const float m_MAX_FPS = 1.0 / 120.0f;
+
 		Window* m_window = nullptr;
 		Camera* m_camera = nullptr;
 	};

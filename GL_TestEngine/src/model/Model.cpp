@@ -14,11 +14,11 @@ namespace engine {
 	}
 
 	Model::~Model() {
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 		for (const auto& material : m_materials) {
 			delete material;
 		}
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 	void Model::loadModel(const std::string& path) {
@@ -33,7 +33,7 @@ namespace engine {
 		);
 
 		if (scene == nullptr) {
-			Logger::getInstance()->write("Could not load Mesh from path " + path);
+			Logger::getInstance()->write("Could not load Model from path " + path);
 			return;
 		}
 
@@ -62,7 +62,7 @@ namespace engine {
 	void Model::processMesh(aiMesh* mesh) {
 		VertexData tempData;
 
-		// Convert Vertex Position, Color and Texture Coords to Vertex Data
+		// Convert Vertex Position, Color and Texture Coords into the Vertex Data Struct Format
 		for (int i = 0; i < mesh->mNumVertices; i++) {
 			tempData.position[0] = mesh->mVertices[i].x;
 			tempData.position[1] = mesh->mVertices[i].y;
@@ -92,7 +92,7 @@ namespace engine {
 			}
 		}
 
-		// Load Materials
+		// Load Materials and the associated Textures
 		if (mesh->mMaterialIndex >= 0) {
 			Material* material = new Material(*m_scene, *mesh);
 			m_materials.push_back(material);

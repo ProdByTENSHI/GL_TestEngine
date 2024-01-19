@@ -26,6 +26,7 @@ namespace engine {
 		~Material();
 
 		const inline aiMaterial* getMaterial() { return m_material; }
+		const inline std::vector<Texture*> getTextures() { return m_textures; }
 
 	private:
 		MaterialData m_data;

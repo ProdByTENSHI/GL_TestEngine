@@ -13,7 +13,6 @@ namespace engine {
 
 		template<typename T>
 		bool isVectorEqual(std::vector<T>& lhs, std::vector<T>& rhs) {
-			// Before sorting check if both vectors have the same Size
 			if (lhs.size() != rhs.size())
 				return false;
 

@@ -23,11 +23,6 @@ namespace engine {
 		m_material->Get(AI_MATKEY_COLOR_DIFFUSE, m_data.diffuse);
 		m_material->Get(AI_MATKEY_COLOR_SPECULAR, m_data.specular);
 
-		std::cout << "MATERIAL DATA:" << std::endl;
-		std::cout << "\tAmbient: " << m_data.ambient << std::endl;
-		std::cout << "\tDiffuse: " << m_data.diffuse << std::endl;
-		std::cout << "\tSpecular: " << m_data.specular << std::endl;
-
 		std::string name = m_material->GetName().C_Str();
 		Logger::getInstance()->write("Material loaded: " + name);
 	}

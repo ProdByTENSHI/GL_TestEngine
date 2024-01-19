@@ -74,6 +74,8 @@ namespace engine {
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
 
+		const inline int getEntityCount() { return m_entityCount; }
+
 		void render(Shader& shader);
 
 	private:

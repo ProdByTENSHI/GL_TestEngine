@@ -3,16 +3,17 @@
 #include <GLFW/glfw3.h>
 
 namespace engine {
-	float Time::updateStartTime = 0.0;
-	float Time::deltaTime = 0.0;
+	float Time::updateStartTime = 0.0f;
+	float Time::deltaTime = 0.0f;
+	float Time::lastFrameTime = 0.0f;
+	int Time::renderedFrames = 0;
 
 	float Time::getTime() {
 		return glfwGetTime();
 	}
 
-	// TODO: Fix this
 	float Time::getFPS() {
-		return 1000.0f / deltaTime;
+		return renderedFrames / (getTime() - updateStartTime);
 	}
 
 	void Time::onUpdateStart() {
@@ -21,5 +22,12 @@ namespace engine {
 
 	void Time::onUpdateEnd() {
 		deltaTime = (glfwGetTimerValue() - updateStartTime) / glfwGetTimerFrequency();
+	}
+
+	void Time::onRenderStart() { }
+
+	void Time::onRenderEnd() {
+		lastFrameTime = getTime();
+		++renderedFrames;
 	}
 }
