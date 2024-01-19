@@ -1403,6 +1403,9 @@
     <ClInclude Include="src\ui\DebugUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ecs\TextureComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\shader.frag" />

@@ -10,8 +10,6 @@
 
 #include "renderer/Shader.h"
 
-#define PI = 3.14159265359
-
 namespace engine {
 	class TransformComponent : public BaseComponent, public UpdateComponent {
 	public:
@@ -25,6 +23,11 @@ namespace engine {
 			rotate(Y_AXIS, rotation.y);
 			rotate(Z_AXIS, rotation.z);
 			m_modelMatrix = glm::scale(m_modelMatrix, scale);
+		}
+
+		void translate(glm::vec3 position) {
+			m_modelMatrix = glm::translate(m_modelMatrix, position);
+			this->position = position;
 		}
 
 		void rotate(glm::vec3 axis, float angleInDegrees) {

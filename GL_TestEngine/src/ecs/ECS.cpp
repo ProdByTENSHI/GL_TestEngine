@@ -196,6 +196,9 @@ namespace engine {
 		std::cout << "<===================================>" << std::endl;
 		std::cout << "Created Group " << group->id << " : " << group << std::endl;
 		std::cout << "\tGroup created with " << components.size() << " Components" << std::endl;
+		for (const auto& c : components) {
+			std::cout << "\t" << c->getName() << std::endl;
+		}
 
 		// Create first Chunk
 		GroupChunk* chunk = createChunk(*group);
@@ -326,6 +329,7 @@ namespace engine {
 #pragma endregion
 
 #pragma region Registry
+	// TODO: Fix Texture not being unbound after usage leading to the texture being applied to all Entities if they dont have their own Texture
 	void EntityManager::render(Shader& shader) {
 		shader.bind();
 

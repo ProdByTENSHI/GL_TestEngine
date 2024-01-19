@@ -6,8 +6,13 @@ namespace engine {
 	float Time::updateStartTime = 0.0;
 	float Time::deltaTime = 0.0;
 
+	float Time::getTime() {
+		return glfwGetTime();
+	}
+
+	// TODO: Fix this
 	float Time::getFPS() {
-		return 1.f / deltaTime;
+		return 1000.0f / deltaTime;
 	}
 
 	void Time::onUpdateStart() {

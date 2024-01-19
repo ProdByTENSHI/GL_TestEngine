@@ -8,7 +8,7 @@ namespace engine {
 		InvalidComponent = 1 << 0,
 		TransformType = 1 << 1,
 		ModelType = 1 << 2,
-		LightType = 1 << 3
+		TextureType = 1 << 3
 	};
 
 	class BaseComponent {

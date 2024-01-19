@@ -3,6 +3,7 @@
 namespace engine {
 	class Time {
 	public:
+		static float getTime();
 		static float getDeltaTime() { return deltaTime; }
 		static float getFPS();
 
