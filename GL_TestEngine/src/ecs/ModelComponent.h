@@ -15,12 +15,12 @@ namespace engine {
 
 		void render() override;
 
-		inline const ComponentType getType() override { return m_type; }
+		inline const unsigned int getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }
 		inline const bool isComponentUnique() override { return m_isUnique; }
 
 	protected:
-		ComponentType m_type = ComponentType::ModelType;
+		unsigned int m_type = ComponentType::RenderType | ComponentType::ModelType;
 
 		const std::string m_name = "Model Component";
 		const bool m_isUnique = true;

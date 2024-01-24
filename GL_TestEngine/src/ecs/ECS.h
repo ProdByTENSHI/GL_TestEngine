@@ -8,7 +8,6 @@
 #include "RenderComponent.h"
 
 namespace engine {
-	// Das muss vorher weil der Nuttensohn Compiler sonst rummeckert und die scheiﬂ Structs nicht kennt
 	struct EntityGroup;
 	struct GroupChunk;
 
@@ -73,6 +72,7 @@ namespace engine {
 		void printComponents(const Entity& entity);
 
 		BaseComponent* getComponentByType(const Entity& entity, ComponentType type);
+		inline bool isComponentTypeOf(BaseComponent& component, unsigned int type) { return component.getType() & BIT(type); }
 
 		const inline int getEntityCount() { return m_entityCount; }
 

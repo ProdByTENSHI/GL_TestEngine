@@ -3,12 +3,17 @@
 #include <string>
 #include <iostream>
 
+#include "utility/Bit.h"
+
 namespace engine {
 	enum ComponentType {
-		InvalidComponent = 1 << 0,
-		TransformType = 1 << 1,
-		ModelType = 1 << 2,
-		TextureType = 1 << 3
+		InvalidComponent = BIT(0),
+		UpdateType = BIT(1),
+		RenderType = BIT(2),
+
+		TransformType = BIT(3),
+		ModelType = BIT(4),
+		TextureType = BIT(5)
 	};
 
 	class BaseComponent {
@@ -17,7 +22,7 @@ namespace engine {
 		friend bool operator!=(const BaseComponent& lhs, const BaseComponent& rhs) { return !(lhs.m_type == rhs.m_type); }
 		friend std::ostream& operator<<(std::ostream& os, const BaseComponent& component) { os << component.m_name << " : " << component.m_type; return os; }
 
-		virtual inline const ComponentType getType() { return m_type; }
+		virtual inline const unsigned int getType() { return m_type; }
 		virtual inline const std::string& getName() { return m_name; }
 		virtual inline const bool isComponentUnique() { return m_isUnique; }
 
@@ -25,9 +30,9 @@ namespace engine {
 		virtual void OnRemove() { }									// Gets called when the Component is removed from an Entity
 
 	protected:
-		ComponentType m_type = ComponentType::InvalidComponent;
+		unsigned int m_type = ComponentType::InvalidComponent;
 
 		const std::string m_name = "Undefined";
-		const bool m_isUnique = true;				// If this is True the Component cannot be added twice to an Entity
+		const bool m_isUnique = true;				// If this is true the Component cannot be added twice to an Entity
 	};
 }

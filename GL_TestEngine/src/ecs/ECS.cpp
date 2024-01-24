@@ -6,6 +6,7 @@
 
 #include "logger/Logger.h"
 #include "utility/ContainerUtility.h"
+#include "utility/Bit.h"
 #include "TransformComponent.h"
 
 namespace engine {
@@ -84,6 +85,7 @@ namespace engine {
 			return nullptr;
 		}
 
+		// TODO: Remove this ugly fucking casting shit and figure out a different way
 		// Add to the fitting Registry
 		UpdateComponent* updateComp = dynamic_cast<UpdateComponent*>(component);
 		if (updateComp != nullptr)
@@ -96,8 +98,6 @@ namespace engine {
 			m_renderRegistry.push_back(renderComp);
 		else
 			delete renderComp;
-
-		std::cout << "\tAdded " << component->getName() << " : " << component << " : " << " to Entity " << entity.getId() << std::endl;
 
 		// Insert Components into m_entityComponents Vector
 		components.push_back(component);
@@ -132,7 +132,7 @@ namespace engine {
 		}
 
 		RenderComponent* renderComp = dynamic_cast<RenderComponent*>(&component);
-		if (updateComp != nullptr) {
+		if (renderComp != nullptr) {
 			removeComponentFromRegistry<RenderComponent>(*renderComp, m_renderRegistry);
 			std::cout << "Removed " << component.getName() << " from the Render Registry" << std::endl;
 		}
@@ -330,6 +330,7 @@ namespace engine {
 
 #pragma region Registry
 	// TODO: Fix Texture not being unbound after usage leading to the texture being applied to all Entities if they dont have their own Texture
+	// TODO: Actually use the fucking Registers
 	void EntityManager::render(Shader& shader) {
 		shader.bind();
 

@@ -4,7 +4,6 @@
 
 namespace engine {
 	float Time::updateStartTime = 0.0f;
-	float Time::deltaTime = 0.0f;
 	float Time::lastFrameTime = 0.0f;
 	int Time::renderedFrames = 0;
 
@@ -13,16 +12,18 @@ namespace engine {
 	}
 
 	float Time::getFPS() {
-		return renderedFrames / (getTime() - updateStartTime);
+		return 1.0f / getDeltaTime();
+	}
+
+	float Time::getDeltaTime() {
+		return updateStartTime - lastFrameTime;
 	}
 
 	void Time::onUpdateStart() {
-		updateStartTime = glfwGetTimerValue();
+		updateStartTime = glfwGetTime();
 	}
 
-	void Time::onUpdateEnd() {
-		deltaTime = (glfwGetTimerValue() - updateStartTime) / glfwGetTimerFrequency();
-	}
+	void Time::onUpdateEnd() { }
 
 	void Time::onRenderStart() { }
 

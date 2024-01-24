@@ -39,7 +39,7 @@ namespace engine {
 			shader.setUniformMat4("u_ObjectTransform", m_modelMatrix);
 		}
 
-		inline const ComponentType getType() override { return m_type; }
+		inline const unsigned int getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }
 		inline const bool isComponentUnique() override { return m_isUnique; }
 
@@ -52,7 +52,7 @@ namespace engine {
 		const static inline glm::vec3 Z_AXIS = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	protected:
-		ComponentType m_type = ComponentType::TransformType;
+		unsigned int m_type = ComponentType::UpdateType | ComponentType::TransformType;
 
 		const std::string m_name = "Transform Component";
 		const bool m_isUnique = true;

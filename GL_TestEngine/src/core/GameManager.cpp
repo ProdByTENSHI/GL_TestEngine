@@ -79,28 +79,28 @@ namespace engine {
 			Time::onUpdateStart();
 			glfwPollEvents();
 
-			transform->translate(glm::vec3(0.0f, glm::cos(Time::getTime()) * Time::getDeltaTime(), 0.0f));
-			transform->rotate(TransformComponent::Y_AXIS, 1.0f * Time::getDeltaTime());
+			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
+				transform->translate(glm::vec3(0.0f, glm::cos(Time::getTime()) * Time::getDeltaTime(), 0.0f));
+				transform->rotate(TransformComponent::Y_AXIS, 1.0f * Time::getDeltaTime());
 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-			// Only show Debug UI when in Debug Mode
-#ifndef NDEBUG
-			ui->render();
-			if (ui->shouldShowWireFrame())
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			else
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif
+				m_camera->HandleInput(*m_window->getWindow(), 5.0f);
+				m_camera->CalculateView();
 
-			m_camera->HandleInput(*m_window->getWindow(), 5.0f);
-			m_camera->CalculateMVP();
-
-			// Cap Render Frame Rate at m_MAX_FPS
-			// TODO: Fix more Memory being allocated the lower the m_MAX_FPS is
-			if ((Time::getTime() - Time::getLastFrameTime()) >= m_MAX_FPS) {
 				Time::onRenderStart();
 				EntityManager::getInstance()->render(*shader);
+
+				// Only show Debug UI when in Debug Mode
+				// Do this after drawing Entities to avoid the Entities overlapping the UI
+#ifndef NDEBUG
+				ui->render();
+				if (ui->shouldShowWireFrame())
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				else
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+#endif
+
 				glfwSwapBuffers(m_window->getWindow());
 				Time::onRenderEnd();
 			}

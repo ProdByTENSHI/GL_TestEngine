@@ -15,8 +15,13 @@ namespace engine {
 	class Camera {
 	public:
 		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, int screenWidth, int screenHeight, Shader& shader);
-		void CalculateMVP();
+
+		// Only do this on Start Up and when the Window is resized / the 
+		void CalculateProjection();
+		void CalculateView();
 		void HandleInput(GLFWwindow& window, float sensitivity);
+
+		const inline glm::vec3 getPosition() { return m_position; }
 
 	private:
 		float m_fov = 0.0f;

@@ -25,12 +25,12 @@ namespace engine {
 			m_texture->bind(m_textureSlot);
 		}
 
-		inline const ComponentType getType() override { return m_type; }
+		inline const unsigned int getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }
 		inline const bool isComponentUnique() override { return m_isUnique; }
 
 	protected:
-		ComponentType m_type = ComponentType::TextureType;
+		unsigned int m_type = ComponentType::RenderType | ComponentType::TextureType;
 
 		const std::string m_name = "Texture Component";
 		const bool m_isUnique = false;

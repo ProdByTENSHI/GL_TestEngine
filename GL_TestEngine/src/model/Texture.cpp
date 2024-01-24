@@ -36,9 +36,7 @@ namespace engine {
 		m_textureData.path = path;
 		m_textureData.type = type;
 
-		std::cout << "Texture loaded: " << path << " : " <<  this << std::endl;
-
-		Logger::getInstance()->write(std::string("Loaded Texture " + path));
+		Logger::getInstance()->write(std::string("Created Texture from Path: " + path));
 	}
 
 	Texture::~Texture() {

@@ -41,7 +41,7 @@ namespace engine {
 		ImGui::Text("FPS: %f", Time::getFPS());
 		ImGui::Text("Time in Seconds: % f", Time::getTime());
 		ImGui::Text("Delta Time: %f", Time::getDeltaTime());
-		ImGui::Text("Entity Count: %i", EntityManager::getInstance()->getEntityCount());
+		ImGui::Text("Entities in Scene: %i", EntityManager::getInstance()->getEntityCount());
 		ImGui::Checkbox("Show Wireframe", m_showWireframe);
 
 		ImGui::End();

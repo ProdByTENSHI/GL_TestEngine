@@ -151,6 +151,7 @@
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\eventsystem\EventDispatcher.cpp" />
     <ClCompile Include="src\ui\DebugUI.cpp" />
     <ClCompile Include="src\model\Material.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
@@ -180,7 +181,12 @@
     <ClCompile Include="thirdparty\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\eventsystem\EventDispatcher.h" />
     <ClInclude Include="src\ecs\TextureComponent.h" />
+    <ClInclude Include="src\eventsystem\EventSubscriber.h" />
+    <ClInclude Include="src\eventsystem\events\WindowEvent.h" />
+    <ClInclude Include="src\eventsystem\EventType.h" />
+    <ClInclude Include="src\eventsystem\IEvent.h" />
     <ClInclude Include="src\ui\DebugUI.h" />
     <ClInclude Include="src\model\Material.h" />
     <ClInclude Include="src\camera\Camera.h" />
@@ -190,6 +196,7 @@
     <ClInclude Include="src\ecs\UpdateComponent.h" />
     <ClInclude Include="src\model\TextureData.h" />
     <ClInclude Include="src\time\Time.h" />
+    <ClInclude Include="src\utility\Bit.h" />
     <ClInclude Include="src\utility\ContainerUtility.h" />
     <ClInclude Include="src\core\ResourceManager.h" />
     <ClInclude Include="src\ecs\BaseComponent.h" />

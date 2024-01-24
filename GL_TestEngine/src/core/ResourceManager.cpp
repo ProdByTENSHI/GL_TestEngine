@@ -31,7 +31,7 @@ namespace engine {
 	}
 
 	void ResourceManager::cacheTexture(Texture& texture) {
-		if (m_textures[texture.getTextureData().path] == nullptr) {
+		if (m_textures[texture.getTextureData().path] != nullptr) {
 			Logger::getInstance()->write(texture.getTextureData().path + " was already cached!");
 			return;
 		}

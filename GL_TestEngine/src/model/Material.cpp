@@ -37,7 +37,6 @@ namespace engine {
 
 	void Material::loadMaterialTextures(aiTextureType type, const std::string& typeName) {
 		for (int i = 0; i < m_material->GetTextureCount(type); i++) {
-			// Outputs the Texture Path of the current Iteration to &path
 			aiString path;
 			m_material->GetTexture(type, i, &path);
 
