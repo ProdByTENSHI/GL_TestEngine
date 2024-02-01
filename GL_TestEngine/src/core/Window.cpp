@@ -20,7 +20,6 @@ namespace engine {
 		m_width = m_INIT_WIDTH;
 		m_height = m_INIT_HEIGHT;
 
-
 		glfwMakeContextCurrent(m_window);
 
 		glDisable(GL_FRAMEBUFFER_SRGB);

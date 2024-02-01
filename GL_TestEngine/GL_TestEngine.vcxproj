@@ -154,7 +154,6 @@
     <ClCompile Include="src\ui\DebugUI.cpp" />
     <ClCompile Include="src\model\Material.cpp" />
     <ClCompile Include="src\camera\Camera.cpp" />
-    <ClCompile Include="src\ecs\ModelComponent.cpp" />
     <ClCompile Include="src\model\Texture.cpp" />
     <ClCompile Include="src\time\Time.cpp" />
     <ClCompile Include="src\utility\ContainerUtility.cpp" />
@@ -180,6 +179,7 @@
     <ClCompile Include="thirdparty\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\AmbientLightComponent.h" />
     <ClInclude Include="src\ecs\TextureComponent.h" />
     <ClInclude Include="src\Math\Easing.h" />
     <ClInclude Include="src\ui\DebugUI.h" />

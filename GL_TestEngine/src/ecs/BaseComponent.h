@@ -10,10 +10,12 @@ namespace engine {
 		InvalidComponent = BIT(0),
 		UpdateType = BIT(1),
 		RenderType = BIT(2),
+		LightType = BIT(3),
 
-		TransformType = BIT(3),
-		ModelType = BIT(4),
-		TextureType = BIT(5)
+		TransformType = BIT(4),
+		ModelType = BIT(5),
+		TextureType = BIT(6),
+		AmbientLightType = BIT(7)
 	};
 
 	class BaseComponent {

@@ -4,15 +4,14 @@
 #include <GLFW/glfw3.h>
 
 namespace engine {
-	// TODO: Add Window Resizing Callback
 	class Window {
 	public:
 		Window();
 		~Window();
 
 		GLFWwindow* getWindow();
-		inline const int getWidth() { glfwGetWindowSize(m_window, &m_width, &m_height); return m_width; }
-		inline const int getHeight() { glfwGetWindowSize(m_window, &m_width, &m_height); return m_height; }
+		inline const int& getWidth() { glfwGetWindowSize(m_window, &m_width, &m_height); return m_width; }
+		inline const int& getHeight() { glfwGetWindowSize(m_window, &m_width, &m_height); return m_height; }
 
 	private:
 		GLFWwindow* m_window = nullptr;

@@ -13,7 +13,9 @@ namespace engine {
 		ModelComponent(Model* model, Shader& shader) { m_model = model; m_shader = &shader; }
 		ModelComponent(const std::string& meshPath, Shader& shader) { m_model = new Model(meshPath); m_shader = &shader; }
 
-		void render() override;
+		void render() override {
+			m_model->render(*m_shader);
+		}
 
 		inline const unsigned int getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }

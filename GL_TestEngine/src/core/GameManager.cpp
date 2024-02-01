@@ -17,6 +17,7 @@
 
 namespace engine {
 	Shader* shader = nullptr;
+	Entity* ambient = nullptr;
 	Entity* box = nullptr;
 
 	DebugUI* debugUi = nullptr;
@@ -29,23 +30,26 @@ namespace engine {
 
 		m_window = new Window();
 
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_LIGHTING);
+
 		// Initialize GLEW after creating the OpenGL Context
 		if (glewInit() != GLEW_OK) {
 			Logger::getInstance()->write("GLEW could not be initialized!");
 			return;
 		}
 
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_STENCIL_TEST);
-
 		debugUi = new DebugUI(*m_window);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
+		ambient = &EntityManager::getInstance()->createEmptyEntity();
+		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, *shader));
+
 		box = &EntityManager::getInstance()->createEmptyEntity();
 		EntityManager::getInstance()->addComponent(box->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-		EntityManager::getInstance()->addComponent(box->getId(), new ModelComponent("res/models/structure-tall.obj", *shader));
+		EntityManager::getInstance()->addComponent(box->getId(), new ModelComponent("res/models/box-large.obj", *shader));
 
 		m_isRunning = true;
 	}
@@ -62,21 +66,24 @@ namespace engine {
 		delete m_window;
 
 		Logger::getInstance()->write("Engine Closed!");
-
 		delete Logger::getInstance();
 	}
 
 	void GameManager::update() {
 		float lastFrameTime = 0.0f;
-		glClearColor(0.2f, 0.35f, 0.3f, 1.0f);
+		//glClearColor(0.1f, 0.1, 0.1, 1.0f);
+
+		TransformComponent* transform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*box, ComponentType::TransformType);
+		AmbientLightComponent* ambientLight = (AmbientLightComponent*)EntityManager::getInstance()->getComponentByType(*ambient, ComponentType::AmbientLightType);
 
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			Time::onUpdateStart();
 			glfwPollEvents();
 
-			TransformComponent* transform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*box, ComponentType::TransformType);
 
 			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
+				ambientLight->setValues(*debugUi->m_ambientColorR, *debugUi->m_ambientColorG, *debugUi->m_ambientColorB, *debugUi->m_ambientColorA, *debugUi->m_ambientIntensity);
+
 				transform->rotate(TransformComponent::X_AXIS, Time::getDeltaTime());
 				transform->rotate(TransformComponent::Y_AXIS, Time::getDeltaTime());
 

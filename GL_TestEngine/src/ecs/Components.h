@@ -3,3 +3,4 @@
 #include "TransformComponent.h"
 #include "ModelComponent.h"
 #include "TextureComponent.h"
+#include "AmbientLightComponent.h"

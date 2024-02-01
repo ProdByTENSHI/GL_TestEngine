@@ -16,7 +16,15 @@ namespace engine {
 
 		inline bool shouldShowWireFrame() { return *m_showWireframe; }
 
+		// Light Stuff
+		float* m_ambientColorR = nullptr;
+		float* m_ambientColorG = nullptr;
+		float* m_ambientColorB = nullptr;
+		float* m_ambientColorA = nullptr;
+		float* m_ambientIntensity = nullptr;
+
 	private:
+		// Model Stuff
 		bool* m_showWireframe = nullptr;
 	};
 }

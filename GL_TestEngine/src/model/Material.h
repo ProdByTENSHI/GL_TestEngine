@@ -17,6 +17,7 @@ namespace engine {
 		float ambient;
 		float diffuse;
 		float specular;
+		float shininess;
 	};
 
 	class Material {
@@ -26,6 +27,7 @@ namespace engine {
 		~Material();
 
 		const inline aiMaterial* getMaterial() { return m_material; }
+		const inline MaterialData getData() const { return m_data; }
 		const inline std::vector<Texture*> getTextures() { return m_textures; }
 
 	private:
