@@ -27,13 +27,11 @@ namespace engine {
 		m_ambientColorR = new float;
 		m_ambientColorG = new float;
 		m_ambientColorB = new float;
-		m_ambientColorA = new float;
 		m_ambientIntensity = new float;
 
 		*m_ambientColorR = 1.0f;
 		*m_ambientColorG = 1.0f;
 		*m_ambientColorB = 1.0f;
-		*m_ambientColorA = 1.0f;
 		*m_ambientIntensity = 1.0f;
 
 	}
@@ -62,7 +60,6 @@ namespace engine {
 		ImGui::SliderFloat("Ambient R: ", m_ambientColorR, 0.0f, 1.0f);
 		ImGui::SliderFloat("Ambient G: ", m_ambientColorG, 0.0f, 1.0f);
 		ImGui::SliderFloat("Ambient B: ", m_ambientColorB, 0.0f, 1.0f);
-		ImGui::SliderFloat("Ambient A: ", m_ambientColorA, 0.0f, 1.0f);
 		ImGui::SliderFloat("Ambient Intensity: ", m_ambientIntensity, 0.0f, 5.0f);
 
 		ImGui::End();

@@ -2,5 +2,6 @@
 
 newmtl colormap
 Kd 1 1 1
+Ka 1 0.5 1
 map_Kd Textures/colormap.png
 

@@ -8,7 +8,7 @@ in vec2 v_TexCoord;
 uniform sampler2D u_Texture;
 
 // Light
-uniform vec4 u_AmbientColor;
+uniform vec3 u_AmbientColor;
 uniform float u_AmbientIntensity;
 
 struct Material {
@@ -22,5 +22,5 @@ uniform Material u_Material;
 
 void main()
 {
-	FragColor = texture(u_Texture, v_TexCoord) * (u_AmbientColor * u_AmbientIntensity * u_Material.ambient);
+	FragColor = texture(u_Texture, v_TexCoord) * (vec4(u_AmbientColor, 1.0) * u_AmbientIntensity * u_Material.ambient);
 }

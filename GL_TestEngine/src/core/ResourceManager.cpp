@@ -14,13 +14,25 @@ namespace engine {
 		return instance;
 	}
 
+	Model* ResourceManager::loadModel(const std::string& path) {
+		if (doesResourceExist(m_models, path)) {
+			return m_models[path];
+		}
+		else {
+			Model* model = new Model(path);
+			if (!model->wasLoaded())
+				return nullptr;
+
+			m_models.insert(std::make_pair(path, model));
+			return model;
+		}
+	}
+
 	Texture* ResourceManager::loadTexture(const std::string& path, const std::string& type) {
 		if (doesResourceExist(m_textures, path)) {
-			Logger::getInstance()->write(std::string("Texture " + path + " was already loaded before."));
 			return m_textures[path];
 		}
 		else {
-			Logger::getInstance()->write(std::string("Texture " + path + " was not loaded before."));
 			Texture* texture = new Texture(path, type);
 			if (texture == nullptr)
 				return nullptr;
@@ -32,7 +44,6 @@ namespace engine {
 
 	void ResourceManager::cacheTexture(Texture& texture) {
 		if (m_textures[texture.getTextureData().path] != nullptr) {
-			Logger::getInstance()->write(texture.getTextureData().path + " was already cached!");
 			return;
 		}
 

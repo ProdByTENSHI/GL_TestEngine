@@ -10,8 +10,8 @@ namespace engine {
 	class ResourceManager {
 	public:
 		static ResourceManager* getInstance();
-
-		// TODO: Add Model Caching
+		
+		Model* loadModel(const std::string& path);
 		Texture* loadTexture(const std::string& path, const std::string& type);
 
 		// Caches the Texture into the m_textures map
@@ -24,7 +24,8 @@ namespace engine {
 		ResourceManager();
 		ResourceManager(const ResourceManager& other);
 
-		// K: Path; V: Pointer to Texture
+		// K: Path; V: Pointer to Resource
 		std::unordered_map<std::string, Texture*> m_textures;
+		std::unordered_map<std::string, Model*> m_models;
 	};
 }

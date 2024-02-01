@@ -16,9 +16,11 @@
 #include "math/Random.h"
 
 namespace engine {
+	const int BOXES_IN_SCENE = 1000;
+
 	Shader* shader = nullptr;
 	Entity* ambient = nullptr;
-	Entity* box = nullptr;
+	Entity* boxes[BOXES_IN_SCENE];
 
 	DebugUI* debugUi = nullptr;
 
@@ -45,11 +47,18 @@ namespace engine {
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		ambient = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, *shader));
+		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f, *shader));
 
-		box = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(box->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-		EntityManager::getInstance()->addComponent(box->getId(), new ModelComponent("res/models/box-large.obj", *shader));
+		std::cout << "TIME BEFORE SPAWNING " << BOXES_IN_SCENE << " BOXES: " << Time::getTime() << std::endl;
+		for (int i = 0; i < BOXES_IN_SCENE; i++) {
+			boxes[i] = &EntityManager::getInstance()->createEmptyEntity();
+			EntityManager::getInstance()->addComponent(boxes[i]->getId(), 
+				new TransformComponent(glm::vec3(Random::getFloat(-25.0f, 25.0f), Random::getFloat(-25.0f, 25.0f), Random::getFloat(-25.0f, 25.0f)), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+			EntityManager::getInstance()->addComponent(boxes[i]->getId(), new ModelComponent("res/models/box-large.obj", *shader));
+		}
+
+
+		std::cout << "TIME AFTER SPAWNING " << BOXES_IN_SCENE << " BOXES: " << Time::getTime() << std::endl;
 
 		m_isRunning = true;
 	}
@@ -73,19 +82,26 @@ namespace engine {
 		float lastFrameTime = 0.0f;
 		//glClearColor(0.1f, 0.1, 0.1, 1.0f);
 
-		TransformComponent* transform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*box, ComponentType::TransformType);
 		AmbientLightComponent* ambientLight = (AmbientLightComponent*)EntityManager::getInstance()->getComponentByType(*ambient, ComponentType::AmbientLightType);
+		TransformComponent* transforms[BOXES_IN_SCENE];
+
+		for (int i = 0; i < BOXES_IN_SCENE; i++) {
+			transforms[i] = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*boxes[i], ComponentType::TransformType);
+			if (transforms[i] == nullptr)
+				std::cerr << "Could not get Transform of Entity ID " << boxes[i]->getId() << std::endl;
+		}
 
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			Time::onUpdateStart();
 			glfwPollEvents();
 
-
 			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
-				ambientLight->setValues(*debugUi->m_ambientColorR, *debugUi->m_ambientColorG, *debugUi->m_ambientColorB, *debugUi->m_ambientColorA, *debugUi->m_ambientIntensity);
+				ambientLight->setValues(*debugUi->m_ambientColorR, *debugUi->m_ambientColorG, *debugUi->m_ambientColorB, *debugUi->m_ambientIntensity);
 
-				transform->rotate(TransformComponent::X_AXIS, Time::getDeltaTime());
-				transform->rotate(TransformComponent::Y_AXIS, Time::getDeltaTime());
+				for (int i = 0; i < BOXES_IN_SCENE; i++) {
+					transforms[i]->rotate(X_AXIS, Time::getDeltaTime() * (i * 0.01f));
+					transforms[i]->rotate(Y_AXIS, Time::getDeltaTime() * (i * 0.01f));
+				}
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 

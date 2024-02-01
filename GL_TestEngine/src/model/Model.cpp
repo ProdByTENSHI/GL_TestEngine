@@ -58,6 +58,7 @@ namespace engine {
 
 		m_vbo.unbind();
 
+		m_wasLoaded = true;
 		Logger::getInstance()->write("Loaded Model " + path);
 	}
 

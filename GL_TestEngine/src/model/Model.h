@@ -36,6 +36,10 @@ namespace engine {
 		void render(Shader& shader);
 		static unsigned int triangleCount;
 
+		inline bool wasLoaded() {
+			return m_wasLoaded;
+		}
+
 	private:
 		// Load all Informations from the Mesh into the Vectors
 		void processMesh(aiMesh* mesh);
@@ -52,5 +56,7 @@ namespace engine {
 		VAO m_vao;
 		IBO m_ibo;
 		VertexBufferLayout m_layout;
+
+		bool m_wasLoaded = false;
 	};
 }

@@ -9,6 +9,7 @@
 #include "UpdateComponent.h"
 
 #include "renderer/Shader.h"
+#include "math/Axis.h"
 
 namespace engine {
 	class TransformComponent : public BaseComponent, public UpdateComponent {
@@ -46,10 +47,6 @@ namespace engine {
 		glm::vec3 position;
 		glm::fquat rotation;
 		glm::vec3 scale;
-
-		const static inline glm::vec3 X_AXIS = glm::vec3(1.0f, 0.0f, 0.0f);
-		const static inline glm::vec3 Y_AXIS = glm::vec3(0.0f, 1.0f, 0.0f);
-		const static inline glm::vec3 Z_AXIS = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	protected:
 		unsigned int m_type = ComponentType::UpdateType | ComponentType::TransformType;

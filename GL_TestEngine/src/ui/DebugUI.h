@@ -20,7 +20,6 @@ namespace engine {
 		float* m_ambientColorR = nullptr;
 		float* m_ambientColorG = nullptr;
 		float* m_ambientColorB = nullptr;
-		float* m_ambientColorA = nullptr;
 		float* m_ambientIntensity = nullptr;
 
 	private:
