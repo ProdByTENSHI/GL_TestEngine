@@ -26,6 +26,12 @@ namespace engine {
 			return true;
 		}
 
+		// TODO: Fix this
+		template<typename T>
+		const int getArraySize(const T array[]) {
+			return sizeof(array) / sizeof(array[0]);
+		}
+
 	private:
 		ContainerUtility();
 		ContainerUtility(const ContainerUtility& other);

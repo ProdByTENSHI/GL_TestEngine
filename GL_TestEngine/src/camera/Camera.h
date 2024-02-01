@@ -14,10 +14,12 @@
 namespace engine {
 	class Camera {
 	public:
-		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, int screenWidth, int screenHeight, Shader& shader);
+		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader);
 
-		// Only do this on Start Up and when the Window is resized / the 
+		// Only do this on Start Up and when the Window is resized
 		void CalculateProjection();
+
+		// The View has to be calculated every Frame
 		void CalculateView();
 		void HandleInput(GLFWwindow& window, float sensitivity);
 
@@ -28,8 +30,8 @@ namespace engine {
 		float m_nearPlane = 0.0f;
 		float m_farPlane = 0.0f;
 
-		int m_screenWidth;
-		int m_screenHeight;
+		const int* m_screenWidth = nullptr;
+		const int* m_screenHeight = nullptr;
 
 		glm::vec3 m_position = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 m_orientation = glm::vec3(0.0f, 0.0f, -1.0f);

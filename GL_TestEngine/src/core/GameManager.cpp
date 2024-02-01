@@ -12,16 +12,14 @@
 #include "ecs/Components.h"
 #include "ui/DebugUI.h"
 #include "time/Time.h"
+#include "utility/ContainerUtility.h"
+#include "math/Random.h"
 
 namespace engine {
 	Shader* shader = nullptr;
-	Entity* entity = nullptr;
-	Entity* entity2 = nullptr;
+	Entity* box = nullptr;
 
-	DebugUI* ui = nullptr;
-
-	TransformComponent* transform = nullptr;
-	TransformComponent* transform2 = nullptr;
+	DebugUI* debugUi = nullptr;
 
 	GameManager::GameManager() {
 		if (!glfwInit()) {
@@ -40,18 +38,14 @@ namespace engine {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
 
-		ui = new DebugUI(*m_window);
+		debugUi = new DebugUI(*m_window);
 
 		shader = new Shader("res/shader/shader.vert", "res/shader/shader.frag");
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
-		entity = &EntityManager::getInstance()->createEmptyEntity();
-		transform = (TransformComponent*)EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 2.5f, 2.0f)));
-		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/box-wide.obj", *shader));
-
-		entity2 = &EntityManager::getInstance()->createEmptyEntity();
-		transform2 = (TransformComponent*)EntityManager::getInstance()->addComponent(entity2->getId(), new TransformComponent(glm::vec3(2.0f, 0.0f, 0.0f), glm::vec3(5.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-		EntityManager::getInstance()->addComponent(entity2->getId(), new ModelComponent("res/models/structure-tall.obj", *shader));
+		box = &EntityManager::getInstance()->createEmptyEntity();
+		EntityManager::getInstance()->addComponent(box->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		EntityManager::getInstance()->addComponent(box->getId(), new ModelComponent("res/models/structure-tall.obj", *shader));
 
 		m_isRunning = true;
 	}
@@ -60,6 +54,7 @@ namespace engine {
 		delete m_camera;
 		delete shader;
 		delete EntityManager::getInstance();
+		delete debugUi;
 
 		glfwDestroyWindow(m_window->getWindow());
 		glfwTerminate();
@@ -79,9 +74,11 @@ namespace engine {
 			Time::onUpdateStart();
 			glfwPollEvents();
 
+			TransformComponent* transform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*box, ComponentType::TransformType);
+
 			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
-				transform->translate(glm::vec3(0.0f, glm::cos(Time::getTime()) * Time::getDeltaTime(), 0.0f));
-				transform->rotate(TransformComponent::Y_AXIS, 1.0f * Time::getDeltaTime());
+				transform->rotate(TransformComponent::X_AXIS, Time::getDeltaTime());
+				transform->rotate(TransformComponent::Y_AXIS, Time::getDeltaTime());
 
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -94,8 +91,8 @@ namespace engine {
 				// Only show Debug UI when in Debug Mode
 				// Do this after drawing Entities to avoid the Entities overlapping the UI
 #ifndef NDEBUG
-				ui->render();
-				if (ui->shouldShowWireFrame())
+				debugUi->render();
+				if (debugUi->shouldShowWireFrame())
 					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				else
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -9,6 +9,8 @@
 #include "logger/Logger.h"
 
 namespace engine {
+	unsigned int Model::triangleCount = 0;
+
 	Model::Model(const std::string& meshPath) {
 		loadModel(meshPath);
 	}
@@ -81,6 +83,11 @@ namespace engine {
 			tempData.normal[2] = mesh->mNormals[i].z;
 
 			m_verticeData.push_back(tempData);
+
+			// Count Triangles
+			if (i % 3 == 0) {
+				Model::triangleCount++;
+			}
 		}
 
 		// Get Indices and place them into m_indices Vector

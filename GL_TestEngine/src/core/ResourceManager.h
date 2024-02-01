@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 
+#include <model/Model.h>
 #include "model/Texture.h"
 
 namespace engine {
@@ -10,6 +11,7 @@ namespace engine {
 	public:
 		static ResourceManager* getInstance();
 
+		// TODO: Add Model Caching
 		Texture* loadTexture(const std::string& path, const std::string& type);
 
 		// Caches the Texture into the m_textures map

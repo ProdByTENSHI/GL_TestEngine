@@ -34,6 +34,7 @@ namespace engine {
 		void loadModel(const std::string& path);
 
 		void render(Shader& shader);
+		static unsigned int triangleCount;
 
 	private:
 		// Load all Informations from the Mesh into the Vectors

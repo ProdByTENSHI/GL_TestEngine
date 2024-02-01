@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "model/Model.h"
 #include "ecs/ECS.h"
 #include "time/Time.h"
 
@@ -42,6 +43,7 @@ namespace engine {
 		ImGui::Text("Time in Seconds: % f", Time::getTime());
 		ImGui::Text("Delta Time: %f", Time::getDeltaTime());
 		ImGui::Text("Entities in Scene: %i", EntityManager::getInstance()->getEntityCount());
+		ImGui::Text("Total Triangles in Scene: %i", Model::triangleCount);
 		ImGui::Checkbox("Show Wireframe", m_showWireframe);
 
 		ImGui::End();
