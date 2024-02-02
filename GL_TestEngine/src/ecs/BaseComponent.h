@@ -13,9 +13,8 @@ namespace engine {
 		LightType = BIT(3),
 
 		TransformType = BIT(4),
-		ModelType = BIT(5),
-		TextureType = BIT(6),
-		AmbientLightType = BIT(7)
+		ModelType = BIT(5),	TextureType = BIT(6),
+		AmbientLightType = BIT(7), DirectionalLightType = BIT(8)
 	};
 
 	class BaseComponent {

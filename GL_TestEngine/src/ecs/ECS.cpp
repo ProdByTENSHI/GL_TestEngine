@@ -164,6 +164,7 @@ namespace engine {
 		std::cout << std::endl;
 	}
 
+	// TODO: Return Array of Component if more than one of that type are attached to the Entity
 	BaseComponent* EntityManager::getComponentByType(const Entity& entity, ComponentType type) {
 		std::vector<BaseComponent*>& components = getEntityComponents(entity);
 		if (type & ComponentType::InvalidComponent) {

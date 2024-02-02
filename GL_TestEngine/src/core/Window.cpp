@@ -3,6 +3,7 @@
 #include <iostream>
 
 namespace engine {
+	// TODO: Update Width and Height
 	void onResize(GLFWwindow* window, int width, int height) {
 		glViewport(0, 0, width, height);
 	}

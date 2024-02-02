@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\AmbientLightComponent.h" />
+    <ClInclude Include="src\ecs\DirectionalLightComponent.h" />
     <ClInclude Include="src\ecs\TextureComponent.h" />
     <ClInclude Include="src\math\Axis.h" />
     <ClInclude Include="src\Math\Easing.h" />

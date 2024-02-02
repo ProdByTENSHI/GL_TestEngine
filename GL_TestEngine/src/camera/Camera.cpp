@@ -6,7 +6,6 @@
 #include "time/Time.h"
 
 namespace engine {
-	// TODO: Fix Screen width and height not being updated when Window is resized
 	Camera::Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader) {
 		m_fov = FOV;
 		m_nearPlane = nearPlane;

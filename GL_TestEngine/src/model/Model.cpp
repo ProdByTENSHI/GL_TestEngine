@@ -85,6 +85,7 @@ namespace engine {
 
 			m_verticeData.push_back(tempData);
 
+			// TODO: Wrong
 			// Count Triangles
 			if (i % 3 == 0) {
 				Model::triangleCount++;
@@ -113,6 +114,7 @@ namespace engine {
 
 		for (const auto& material : m_materials) {
 			shader.setUniform1f("u_Material.ambient", material->getData().ambient);
+			shader.setUniform1f("u_Material.diffuse", material->getData().diffuse);
 		}
 
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);

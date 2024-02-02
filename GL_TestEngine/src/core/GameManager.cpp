@@ -16,11 +16,12 @@
 #include "math/Random.h"
 
 namespace engine {
-	const int BOXES_IN_SCENE = 1000;
+	const int BOXES_IN_SCENE = 5;
 
 	Shader* shader = nullptr;
 	Entity* ambient = nullptr;
-	Entity* boxes[BOXES_IN_SCENE];
+	Entity* directional = nullptr;
+	Entity* entity = nullptr;
 
 	DebugUI* debugUi = nullptr;
 
@@ -49,16 +50,15 @@ namespace engine {
 		ambient = &EntityManager::getInstance()->createEmptyEntity();
 		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f, *shader));
 
-		std::cout << "TIME BEFORE SPAWNING " << BOXES_IN_SCENE << " BOXES: " << Time::getTime() << std::endl;
-		for (int i = 0; i < BOXES_IN_SCENE; i++) {
-			boxes[i] = &EntityManager::getInstance()->createEmptyEntity();
-			EntityManager::getInstance()->addComponent(boxes[i]->getId(), 
-				new TransformComponent(glm::vec3(Random::getFloat(-25.0f, 25.0f), Random::getFloat(-25.0f, 25.0f), Random::getFloat(-25.0f, 25.0f)), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-			EntityManager::getInstance()->addComponent(boxes[i]->getId(), new ModelComponent("res/models/box-large.obj", *shader));
-		}
+		directional = &EntityManager::getInstance()->createEmptyEntity();
+		TransformComponent* directionalTransform = (TransformComponent*)EntityManager::getInstance()->addComponent(directional->getId(), 
+			new TransformComponent("u_LightPosition", glm::vec3(5.0f, 5.0f, 0.0f), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		EntityManager::getInstance()->addComponent(directional->getId(), new ModelComponent("res/models/box-large.obj", *shader));
+		EntityManager::getInstance()->addComponent(directional->getId(), new DirectionalLightComponent(0.5f, 0.5f, 1.0f, 1.0f, *directionalTransform, *shader));
 
-
-		std::cout << "TIME AFTER SPAWNING " << BOXES_IN_SCENE << " BOXES: " << Time::getTime() << std::endl;
+		entity = &EntityManager::getInstance()->createEmptyEntity();
+		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent("u_ObjectTransform", glm::vec3(0), glm::vec3(0), glm::vec3(1)));
+		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/box-large.obj", *shader));
 
 		m_isRunning = true;
 	}
@@ -83,27 +83,20 @@ namespace engine {
 		//glClearColor(0.1f, 0.1, 0.1, 1.0f);
 
 		AmbientLightComponent* ambientLight = (AmbientLightComponent*)EntityManager::getInstance()->getComponentByType(*ambient, ComponentType::AmbientLightType);
-		TransformComponent* transforms[BOXES_IN_SCENE];
+		TransformComponent* transform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*entity, ComponentType::TransformType);
 
-		for (int i = 0; i < BOXES_IN_SCENE; i++) {
-			transforms[i] = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*boxes[i], ComponentType::TransformType);
-			if (transforms[i] == nullptr)
-				std::cerr << "Could not get Transform of Entity ID " << boxes[i]->getId() << std::endl;
-		}
+		TransformComponent* lightTransform = (TransformComponent*)EntityManager::getInstance()->getComponentByType(*directional, ComponentType::DirectionalLightType);
 
 		while (!glfwWindowShouldClose(m_window->getWindow())) {
 			Time::onUpdateStart();
 			glfwPollEvents();
 
 			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
+				transform->rotate(Y_AXIS, Time::getDeltaTime());
+
 				ambientLight->setValues(*debugUi->m_ambientColorR, *debugUi->m_ambientColorG, *debugUi->m_ambientColorB, *debugUi->m_ambientIntensity);
 
-				for (int i = 0; i < BOXES_IN_SCENE; i++) {
-					transforms[i]->rotate(X_AXIS, Time::getDeltaTime() * (i * 0.01f));
-					transforms[i]->rotate(Y_AXIS, Time::getDeltaTime() * (i * 0.01f));
-				}
-
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				m_camera->HandleInput(*m_window->getWindow(), 5.0f);
 				m_camera->CalculateView();

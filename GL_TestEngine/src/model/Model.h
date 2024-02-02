@@ -36,7 +36,7 @@ namespace engine {
 		void render(Shader& shader);
 		static unsigned int triangleCount;
 
-		inline bool wasLoaded() {
+		inline bool wasLoaded() const {
 			return m_wasLoaded;
 		}
 
