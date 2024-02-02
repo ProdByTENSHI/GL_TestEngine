@@ -3,6 +3,6 @@
 namespace engine {
 	class RenderComponent {
 	public:
-		virtual void render() { }
+		virtual void render(Shader& shader) { }
 	};
 }

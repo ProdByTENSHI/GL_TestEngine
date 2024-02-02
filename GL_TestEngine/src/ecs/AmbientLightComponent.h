@@ -5,10 +5,8 @@
 namespace engine {
 	class AmbientLightComponent : public BaseComponent, public RenderComponent {
 	public:
-		AmbientLightComponent(float r, float g, float b, float intensity, Shader& shader) {
+		AmbientLightComponent(float r, float g, float b, float intensity) {
 			setValues(r, g, b, intensity);
-
-			m_shader = &shader;
 		}
 
 		void setValues(float r, float g, float b, float intensity) {
@@ -18,9 +16,11 @@ namespace engine {
 			m_intensity = intensity;
 		}
 
-		void render() override {
-			m_shader->setUniform3f("u_AmbientColor", m_r, m_g, m_b);
-			m_shader->setUniform1f("u_AmbientIntensity", m_intensity);
+		void render(Shader& shader) override { }
+
+		void setShaderUniforms(Shader& shader) override {
+			shader.setUniform3f("u_AmbientColor", m_r, m_g, m_b);
+			shader.setUniform1f("u_AmbientIntensity", m_intensity);
 		}
 
 		inline const unsigned int getType() override { return m_type; }
@@ -34,8 +34,6 @@ namespace engine {
 		const bool m_isUnique = false;
 
 	private:
-		Shader* m_shader = nullptr;
-
 		float m_r = 0.0f;
 		float m_g = 0.0f;
 		float m_b = 0.0f;

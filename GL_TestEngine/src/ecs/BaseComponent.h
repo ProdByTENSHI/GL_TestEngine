@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+#include "renderer/Shader.h"
 #include "utility/Bit.h"
 
 namespace engine {
@@ -27,8 +28,10 @@ namespace engine {
 		virtual inline const std::string& getName() { return m_name; }
 		virtual inline const bool isComponentUnique() { return m_isUnique; }
 
-		virtual void OnAdd() { }		// Gets called when the Component is added to an Entity
-		virtual void OnRemove() { }									// Gets called when the Component is removed from an Entity
+		virtual void setShaderUniforms(Shader& shader) { }
+
+		virtual void onAdd() { }		// Gets called when the Component is added to an Entity
+		virtual void onRemove() { }		// Gets called when the Component is removed from an Entity
 
 	protected:
 		unsigned int m_type = ComponentType::InvalidComponent;

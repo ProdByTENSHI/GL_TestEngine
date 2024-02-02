@@ -132,9 +132,8 @@ namespace engine {
 				glGetActiveUniformName(m_program, i, sizeof(name), (GLsizei*)NULL, name);
 				std::cout << "Active Uniforms: " << name << std::endl;
 			}
-		}
-		else
-			m_uniformLocationCache[name] = location;
+		} else
+			m_uniformLocationCache.insert(std::make_pair(name, location));
 
 		return location;
 	}

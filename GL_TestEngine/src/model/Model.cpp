@@ -112,11 +112,6 @@ namespace engine {
 		m_vao.addBuffer(m_vbo, m_layout);
 		m_ibo.bind();
 
-		for (const auto& material : m_materials) {
-			shader.setUniform1f("u_Material.ambient", material->getData().ambient);
-			shader.setUniform1f("u_Material.diffuse", material->getData().diffuse);
-		}
-
 		glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, nullptr);
 
 		m_ibo.unbind();

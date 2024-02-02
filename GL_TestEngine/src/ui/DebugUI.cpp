@@ -32,7 +32,7 @@ namespace engine {
 		*m_ambientColorR = 1.0f;
 		*m_ambientColorG = 1.0f;
 		*m_ambientColorB = 1.0f;
-		*m_ambientIntensity = 1.0f;
+		*m_ambientIntensity = 0.25f;
 
 	}
 

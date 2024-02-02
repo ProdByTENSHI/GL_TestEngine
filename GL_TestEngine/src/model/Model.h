@@ -36,6 +36,10 @@ namespace engine {
 		void render(Shader& shader);
 		static unsigned int triangleCount;
 
+		const std::vector<Material*>& getMaterials() {
+			return m_materials;
+		}
+
 		inline bool wasLoaded() const {
 			return m_wasLoaded;
 		}

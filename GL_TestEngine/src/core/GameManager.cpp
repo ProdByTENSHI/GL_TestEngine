@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <memory>
+#include <string>
 
 #include "renderer/Shader.h"
 #include "ResourceManager.h"
@@ -48,17 +49,17 @@ namespace engine {
 		m_camera = new Camera(45.0f, 0.1f, 100.0f, glm::vec3(0.0f, 0.0f, 10.0f), m_window->getWidth(), m_window->getHeight(), *shader);
 
 		ambient = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f, *shader));
+		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f));
 
 		directional = &EntityManager::getInstance()->createEmptyEntity();
 		TransformComponent* directionalTransform = (TransformComponent*)EntityManager::getInstance()->addComponent(directional->getId(), 
-			new TransformComponent("u_LightPosition", glm::vec3(5.0f, 5.0f, 0.0f), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-		EntityManager::getInstance()->addComponent(directional->getId(), new ModelComponent("res/models/box-large.obj", *shader));
-		EntityManager::getInstance()->addComponent(directional->getId(), new DirectionalLightComponent(0.5f, 0.5f, 1.0f, 1.0f, *directionalTransform, *shader));
+			new TransformComponent(glm::vec3(5.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+		EntityManager::getInstance()->addComponent(directional->getId(), new DirectionalLightComponent(0.5f, 1.0f, 1.0f, 0.5f, *directionalTransform));
 
 		entity = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent("u_ObjectTransform", glm::vec3(0), glm::vec3(0), glm::vec3(1)));
-		EntityManager::getInstance()->addComponent(entity->getId(), new ModelComponent("res/models/box-large.obj", *shader));
+		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0), glm::vec3(1)));
+		EntityManager::getInstance()->addComponent(entity->getId(), 
+			new ModelComponent("res/models/box-large.obj", *(TransformComponent*)EntityManager::getInstance()->getComponentByType(entity->getId(), ComponentType::TransformType)));
 
 		m_isRunning = true;
 	}

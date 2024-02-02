@@ -105,7 +105,7 @@ namespace engine {
 		// Find Group or Create a new one based on the updated Components
 		moveEntityToGroup(entity, getGroupByComponents(components));
 
-		component->OnAdd();
+		component->onAdd();
 
 		return component;
 	}
@@ -140,7 +140,7 @@ namespace engine {
 			delete renderComp;
 		}
 
-		component.OnRemove();
+		component.onRemove();
 
 		// Remove Component from the Entity-Components Vector
 		for (unsigned int i = 0; i < m_entityComponents[entity.getId()].size(); i++) {
@@ -339,15 +339,21 @@ namespace engine {
 			// Update Components
 			for (auto& updateComponent : ec.second) {
 				UpdateComponent* update = dynamic_cast<UpdateComponent*>(updateComponent);
-				if (update != nullptr)
-					update->update(shader);
+				if (update == nullptr)
+					continue;
+
+				update->update(shader);
+				updateComponent->setShaderUniforms(shader);
 			}
 
 			// Render Components
 			for (auto& renderComponent : ec.second) {
 				RenderComponent* render = dynamic_cast<RenderComponent*>(renderComponent);
-				if (render != nullptr)
-					render->render();
+				if (render == nullptr)
+					continue;
+
+				renderComponent->setShaderUniforms(shader);
+				render->render(shader);
 			}
 		}
 

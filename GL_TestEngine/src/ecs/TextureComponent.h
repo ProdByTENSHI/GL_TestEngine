@@ -21,7 +21,7 @@ namespace engine {
 			m_textureSlot = textureSlot;
 		}
 
-		void render() override {
+		void render(Shader& shader) override {
 			m_texture->bind(m_textureSlot);
 		}
 

@@ -12,54 +12,65 @@
 #include "math/Axis.h"
 
 namespace engine {
-	class TransformComponent : public BaseComponent, public UpdateComponent {
+	class TransformComponent : public BaseComponent {
 	public:
-		TransformComponent(const std::string& transformMatUniform, glm::vec3 position, glm::fquat rotation, glm::vec3 scale) {
-			this->position = position;
-			this->rotation = rotation;
-			this->scale = scale;
+		TransformComponent(glm::vec3 position, glm::fquat rotation, glm::vec3 scale) {
+			this->m_position = position;
+			this->m_rotation = rotation;
+			this->m_scale = scale;
 
-			m_transformMatrix = glm::translate(m_transformMatrix, this->position);
+			m_transformMatrix = glm::translate(m_transformMatrix, this->m_position);
 
 			rotate(X_AXIS, rotation.x);
 			rotate(Y_AXIS, rotation.y);
 			rotate(Z_AXIS, rotation.z);
 
 			m_transformMatrix = glm::scale(m_transformMatrix, scale);
-
-			m_transformMatUniform = transformMatUniform;
 		}
 
 		void translate(const glm::vec3& position) {
 			m_transformMatrix = glm::translate(m_transformMatrix, position);
-			this->position = position;
+			this->m_position = position;
 		}
 
 		void rotate(const glm::vec3& axis, float angleInDegrees) {
 			m_transformMatrix = glm::rotate(m_transformMatrix, angleInDegrees, axis);
+			this->m_rotation = axis * angleInDegrees;
 		}
 
-		// Update the Transform Matrix Uniform of the Object in the Shader
-		void update(Shader& shader) override {
-			shader.setUniformMat4(m_transformMatUniform, m_transformMatrix);
-		}
+		// TOOD: Implement Scaling
 
 		inline const unsigned int getType() override { return m_type; }
 		inline const std::string& getName() override { return m_name; }
 		inline const bool isComponentUnique() override { return m_isUnique; }
 
-		glm::vec3 position;
-		glm::fquat rotation;
-		glm::vec3 scale;
+		inline const glm::vec3& getPosition() {
+			return m_position;
+		}
+
+		inline const glm::fquat& getRotation() {
+			return m_rotation;
+		}
+
+		inline const glm::vec3 getScale() {
+			return m_scale;
+		}
+
+		inline const glm::mat4& getTransformationMatrix() {
+			return m_transformMatrix;
+		}
 
 	protected:
-		unsigned int m_type = ComponentType::UpdateType | ComponentType::TransformType;
+		unsigned int m_type = ComponentType::TransformType;
 
 		const std::string m_name = "Transform Component";
 		const bool m_isUnique = true;
 
 	private:
-		std::string m_transformMatUniform;
+		glm::vec3 m_position;
+		glm::fquat m_rotation;
+		glm::vec3 m_scale;
+
 		glm::mat4 m_transformMatrix = glm::mat4(1.0f);
 	};
 }
