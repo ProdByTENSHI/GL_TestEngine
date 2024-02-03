@@ -106,8 +106,8 @@ namespace engine {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2) {
-		glUniform3f(getUniformLocation(name), v0, v1, v2);
+	void Shader::setUniform3f(const std::string& name, const glm::vec3& vec) {
+		glUniform3f(getUniformLocation(name), vec.x, vec.y, vec.z);
 	}
 
 	void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) {

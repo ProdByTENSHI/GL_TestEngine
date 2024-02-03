@@ -14,9 +14,9 @@
 
 namespace engine {
 	struct MaterialData {
-		float ambient;
-		float diffuse;
-		float specular;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
 		float shininess;
 	};
 
@@ -31,6 +31,8 @@ namespace engine {
 		const inline std::vector<Texture*> getTextures() { return m_textures; }
 
 	private:
+		const glm::vec3& colorToVec(const aiColor3D& color);
+
 		MaterialData m_data;
 
 		void loadMaterialTextures(aiTextureType type, const std::string& typeName);

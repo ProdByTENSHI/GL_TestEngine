@@ -31,8 +31,9 @@ namespace engine {
 			shader.setUniformMat4("u_ObjectTransform", m_transform->getTransformationMatrix());
 
 			for (const auto& material : m_model->getMaterials()) {
-				shader.setUniform1f("u_Material.ambient", material->getData().ambient);
-				shader.setUniform1f("u_Material.diffuse", material->getData().diffuse);
+				shader.setUniform3f("u_Material.ambient", material->getData().ambient);
+				shader.setUniform3f("u_Material.diffuse", material->getData().diffuse);
+				shader.setUniform3f("u_Material.specular", material->getData().specular);
 			}
 		}
 

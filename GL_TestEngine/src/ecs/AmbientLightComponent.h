@@ -10,16 +10,17 @@ namespace engine {
 		}
 
 		void setValues(float r, float g, float b, float intensity) {
-			m_r = r;
-			m_b = b;
-			m_g = g;
+			m_color.x = r;
+			m_color.y = b;
+			m_color.z = b;
+
 			m_intensity = intensity;
 		}
 
 		void render(Shader& shader) override { }
 
 		void setShaderUniforms(Shader& shader) override {
-			shader.setUniform3f("u_AmbientColor", m_r, m_g, m_b);
+			shader.setUniform3f("u_AmbientColor", m_color);
 			shader.setUniform1f("u_AmbientIntensity", m_intensity);
 		}
 
@@ -34,9 +35,7 @@ namespace engine {
 		const bool m_isUnique = false;
 
 	private:
-		float m_r = 0.0f;
-		float m_g = 0.0f;
-		float m_b = 0.0f;
+		glm::vec3 m_color = glm::vec3(0);
 		float m_intensity = 1.0f;
 	};
 }

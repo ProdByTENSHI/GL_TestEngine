@@ -19,5 +19,7 @@ void main()
 
 	v_FragPos = vec3(u_ObjectTransform * vec4(pos, 1.0));
 	v_TexCoord = texCoord;
-	v_Normal = normal;
+
+	// TODO: Convert Normals from Local Space to World Space on CPU instead of here
+	v_Normal = mat3(transpose(inverse(u_ObjectTransform))) * normal;
 }

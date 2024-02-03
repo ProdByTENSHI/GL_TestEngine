@@ -33,6 +33,7 @@ namespace engine {
 
 		view = glm::lookAt(m_position, m_position + m_orientation, m_up);
 
+		m_shader->setUniform3f("u_CameraPosition", m_position);
 		m_shader->setUniformMat4("u_CameraView", view);
 		m_shader->unbind();
 	}

@@ -13,17 +13,18 @@ namespace engine {
 		}
 
 		void setValues(float r, float g, float b, float intensity) {
-			m_r = r;
-			m_b = b;
-			m_g = g;
+			m_color.x = r;
+			m_color.y = g;
+			m_color.z = b;
+
 			m_intensity = intensity;
 		}
 
 		void render(Shader& shader) override { }
 
 		void setShaderUniforms(Shader& shader) override {
-			shader.setUniform3f("u_LightPosition", m_transform->getPosition().x, m_transform->getPosition().y, m_transform->getPosition().z);
-			shader.setUniform3f("u_LightColor", m_r, m_g, m_b);
+			shader.setUniform3f("u_LightPosition", m_transform->getPosition());
+			shader.setUniform3f("u_LightColor", m_color);
 			shader.setUniform1f("u_LightIntensity", m_intensity);
 		}
 
@@ -40,9 +41,8 @@ namespace engine {
 	private:
 		TransformComponent* m_transform = nullptr;
 
-		float m_r = 0.0f;
-		float m_g = 0.0f;
-		float m_b = 0.0f;
+		glm::vec3 m_color = glm::vec3(0);
+
 		float m_intensity = 1.0f;
 	};
 }

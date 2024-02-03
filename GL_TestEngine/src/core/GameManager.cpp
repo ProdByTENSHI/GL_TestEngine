@@ -24,6 +24,8 @@ namespace engine {
 	Entity* directional = nullptr;
 	Entity* entity = nullptr;
 
+	TransformComponent* lightTransform = nullptr;
+
 	DebugUI* debugUi = nullptr;
 
 	GameManager::GameManager() {
@@ -52,12 +54,12 @@ namespace engine {
 		EntityManager::getInstance()->addComponent(ambient->getId(), new AmbientLightComponent(1.0f, 1.0f, 1.0f, 1.0f));
 
 		directional = &EntityManager::getInstance()->createEmptyEntity();
-		TransformComponent* directionalTransform = (TransformComponent*)EntityManager::getInstance()->addComponent(directional->getId(), 
-			new TransformComponent(glm::vec3(5.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
-		EntityManager::getInstance()->addComponent(directional->getId(), new DirectionalLightComponent(0.5f, 1.0f, 1.0f, 0.5f, *directionalTransform));
+		lightTransform = (TransformComponent*)EntityManager::getInstance()->addComponent(directional->getId(), 
+			new TransformComponent(glm::vec3(5.0f, 5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+		EntityManager::getInstance()->addComponent(directional->getId(), new DirectionalLightComponent(0.5f, 1.0f, 1.0f, 0.5f, *lightTransform));
 
 		entity = &EntityManager::getInstance()->createEmptyEntity();
-		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0), glm::vec3(1)));
+		EntityManager::getInstance()->addComponent(entity->getId(), new TransformComponent(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0), glm::vec3(1)));
 		EntityManager::getInstance()->addComponent(entity->getId(), 
 			new ModelComponent("res/models/box-large.obj", *(TransformComponent*)EntityManager::getInstance()->getComponentByType(entity->getId(), ComponentType::TransformType)));
 
@@ -94,6 +96,7 @@ namespace engine {
 
 			if (Time::getTime() - Time::getLastFrameTime() >= m_FRAMERATECAP) {
 				transform->rotate(Y_AXIS, Time::getDeltaTime());
+				lightTransform->translate(glm::vec3(glm::cos(Time::getDeltaTime()), 0.0f, 0.0f));
 
 				ambientLight->setValues(*debugUi->m_ambientColorR, *debugUi->m_ambientColorG, *debugUi->m_ambientColorB, *debugUi->m_ambientIntensity);
 
