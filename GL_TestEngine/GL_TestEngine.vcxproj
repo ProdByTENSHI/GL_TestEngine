@@ -163,11 +163,11 @@
     <ClCompile Include="src\memory\IBO.cpp" />
     <ClCompile Include="src\model\Model.cpp" />
     <ClCompile Include="src\renderer\Shader.cpp" />
-    <ClCompile Include="src\core\GameManager.cpp" />
-    <ClCompile Include="src\core\Main.cpp" />
+    <ClCompile Include="src\core\Application.cpp" />
     <ClCompile Include="src\core\Window.cpp" />
     <ClCompile Include="src\memory\VBO.cpp" />
     <ClCompile Include="src\memory\VAO.cpp" />
+    <ClCompile Include="test\SceneTest.cpp" />
     <ClCompile Include="thirdparty\glm\glm\detail\glm.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui.cpp" />
     <ClCompile Include="thirdparty\imgui\imgui_demo.cpp" />
@@ -179,6 +179,7 @@
     <ClCompile Include="thirdparty\stb\stb_vorbis.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\ScriptLifeTime.h" />
     <ClInclude Include="src\ecs\AmbientLightComponent.h" />
     <ClInclude Include="src\ecs\DirectionalLightComponent.h" />
     <ClInclude Include="src\ecs\TextureComponent.h" />
@@ -203,7 +204,7 @@
     <ClInclude Include="src\memory\VertexBufferLayout.h" />
     <ClInclude Include="src\model\Model.h" />
     <ClInclude Include="src\renderer\Shader.h" />
-    <ClInclude Include="src\core\GameManager.h" />
+    <ClInclude Include="src\core\Application.h" />
     <ClInclude Include="src\core\Window.h" />
     <ClInclude Include="src\model\Texture.h" />
     <ClInclude Include="src\memory\VBO.h" />

@@ -24,17 +24,17 @@ namespace engine {
 
 		// Remove newline character from ctime output
 		// Fuck ctime for that
-		// Fix: Cuts of first letter when concat with num values -> Look into Pointer Arithmetics for this issue
+		// TODO Fix: Cuts of first letter when concat with num values -> Look into Pointer Arithmetics for this issue
 		std::string currentTimeString = std::ctime(&time);
 		currentTimeString.erase(std::remove(currentTimeString.begin(), currentTimeString.end(), '\n'), currentTimeString.end());
 
 		// Write Content to File
 		if (m_firstWrite) {
-			stream << "<========== NEW SESSION ==========>]" << std::endl;
+			stream << "-- New Session " << currentTimeString << " --" << std::endl;
 			m_firstWrite = false;
 		}
 
-		stream << "[" << currentTimeString << "]: " << content << std::endl;
-		std::cout << "[" << currentTimeString << "]: " << content << std::endl;
+		stream << content << std::endl;
+		std::cout << content << std::endl;
 	}
 }

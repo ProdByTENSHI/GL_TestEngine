@@ -43,7 +43,7 @@ namespace engine {
 
 	}
 
-	void DebugUI::render() {
+	void DebugUI::onRender() {
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();

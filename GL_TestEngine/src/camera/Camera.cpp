@@ -2,17 +2,16 @@
 
 #include <iostream>
 
-#include "Math/Easing.h"
 #include "time/Time.h"
 
 namespace engine {
-	Camera::Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader) {
+	Camera::Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, int* screenWidth, int* screenHeight, Shader& shader) {
 		m_fov = FOV;
 		m_nearPlane = nearPlane;
 		m_farPlane = farPlane;
 		m_position = position;
-		m_screenWidth = &screenWidth;
-		m_screenHeight = &screenHeight;
+		m_screenWidth = screenWidth;
+		m_screenHeight = screenHeight;
 
 		m_shader = &shader;
 
@@ -27,7 +26,7 @@ namespace engine {
 		m_shader->unbind();
 	}
 
-	void Camera::CalculateView() {
+	void Camera::onUpdate() {
 		m_shader->bind();
 		glm::mat4 view = glm::mat4(1.0f);
 

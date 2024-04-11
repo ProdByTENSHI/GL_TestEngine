@@ -4,15 +4,16 @@
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_glfw.h>
 
+#include "core/ScriptLifeTime.h"
 #include "core/Window.h"
 
 namespace engine {
-	class DebugUI {
+	class DebugUI : public ScriptLifeTime {
 	public:
 		DebugUI(Window& window);
 		~DebugUI();
 
-		void render();
+		void onRender();
 
 		inline bool shouldShowWireFrame() { return *m_showWireframe; }
 

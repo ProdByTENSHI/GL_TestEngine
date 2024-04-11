@@ -9,18 +9,21 @@
 
 #include <GLFW/glfw3.h>
 
+#include "core/ScriptLifeTime.h"
 #include "renderer/Shader.h"
 
 namespace engine {
-	class Camera {
+	class Camera : public ScriptLifeTime {
 	public:
-		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, const int& screenWidth, const int& screenHeight, Shader& shader);
+		Camera(float FOV, float nearPlane, float farPlane, glm::vec3 position, int* screenWidth, int* screenHeight, Shader& shader);
 
 		// Only do this on Start Up and when the Window is resized
 		void CalculateProjection();
 
 		// The View has to be calculated every Frame
-		void CalculateView();
+		void onUpdate();
+
+		// TODO: Move this to Update function
 		void HandleInput(GLFWwindow& window, float sensitivity);
 
 		const inline glm::vec3 getPosition() { return m_position; }

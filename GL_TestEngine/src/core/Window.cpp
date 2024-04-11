@@ -8,26 +8,26 @@ namespace engine {
 		glViewport(0, 0, width, height);
 	}
 
-	Window::Window() {
+	void Window::create(const std::string& title, int width, int height) {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
-		m_window = glfwCreateWindow(m_INIT_WIDTH, m_INIT_HEIGHT, m_TITLE, NULL, NULL);
+		m_window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 		if (m_window == nullptr) {
 			std::cout << "Could not create Window. Error: " << glfwGetError(NULL) << std::endl;
 			return;
 		}
 
-		m_width = m_INIT_WIDTH;
-		m_height = m_INIT_HEIGHT;
+		m_title = title;
+		m_width = width;
+		m_height = height;
 
 		glfwMakeContextCurrent(m_window);
 
 		glDisable(GL_FRAMEBUFFER_SRGB);
 		glfwSetFramebufferSizeCallback(m_window, onResize);
 		glfwSwapInterval(1);
-		glViewport(0, 0, m_INIT_WIDTH, m_INIT_HEIGHT);
-
+		glViewport(0, 0, width, height);
 	}
 
 	Window::~Window() {

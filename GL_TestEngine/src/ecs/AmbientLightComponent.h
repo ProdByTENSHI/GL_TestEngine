@@ -5,15 +5,12 @@
 namespace engine {
 	class AmbientLightComponent : public BaseComponent, public RenderComponent {
 	public:
-		AmbientLightComponent(float r, float g, float b, float intensity) {
-			setValues(r, g, b, intensity);
+		AmbientLightComponent(const glm::vec3& color, float intensity) {
+			setValues(color, intensity);
 		}
 
-		void setValues(float r, float g, float b, float intensity) {
-			m_color.x = r;
-			m_color.y = b;
-			m_color.z = b;
-
+		void setValues(const glm::vec3& color, float intensity) {
+			m_color = color;
 			m_intensity = intensity;
 		}
 

@@ -8,6 +8,7 @@
 #include "RenderComponent.h"
 
 namespace engine {
+	// Forward Declaration
 	struct EntityGroup;
 	struct GroupChunk;
 
@@ -76,6 +77,7 @@ namespace engine {
 
 		const inline int getEntityCount() { return m_entityCount; }
 
+		void update(Shader& shader);
 		void render(Shader& shader);
 
 	private:

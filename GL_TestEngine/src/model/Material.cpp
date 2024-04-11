@@ -27,7 +27,7 @@ namespace engine {
 		m_material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
 		m_material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
 		m_material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
-
+	
 		m_data.ambient = colorToVec(ambientColor);
 		m_data.diffuse = colorToVec(diffuseColor);
 		m_data.specular = colorToVec(specularColor);

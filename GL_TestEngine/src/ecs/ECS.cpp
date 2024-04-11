@@ -330,9 +330,10 @@ namespace engine {
 #pragma endregion
 
 #pragma region Registry
+	// TODO: Refactor Component Casting
 	// TODO: Fix Texture not being unbound after usage leading to the texture being applied to all Entities if they dont have their own Texture
 	// TODO: Actually use the fucking Registers
-	void EntityManager::render(Shader& shader) {
+	void EntityManager::update(Shader& shader) {
 		shader.bind();
 
 		for (auto& ec : m_entityComponents) {
@@ -345,7 +346,15 @@ namespace engine {
 				update->update(shader);
 				updateComponent->setShaderUniforms(shader);
 			}
+		}
 
+		shader.unbind();
+	}
+
+	void EntityManager::render(Shader& shader) {
+		shader.bind();
+
+		for (auto& ec : m_entityComponents) {
 			// Render Components
 			for (auto& renderComponent : ec.second) {
 				RenderComponent* render = dynamic_cast<RenderComponent*>(renderComponent);
